@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <!-- Base -->
+    <definition name="base-definition" template="/WEB-INF/views/tiles/HeadBodyFootLayout.jsp">
+        <put-attribute name="title" value="店吾U | 你最佳的淘宝店铺盈利助手"/>
+        <put-attribute name="header" value="/WEB-INF/views/pages/header.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/pages/footer_default.jsp"/>
+        <put-list-attribute name="stylesheets">
+            <add-attribute value="/static/css/bootstrap-senser-customed.min.css"/>
+            <add-attribute value="/static/css/main-senser.css"/>
+        </put-list-attribute>
+        <put-list-attribute name="javascripts">
+            <add-attribute value="/static/js/bootstrap-senser-customed.min.js"/>
+            <add-attribute value="/static/js/modernizr_senser.custom.js"/>
+        </put-list-attribute>
+    </definition>
+
+    <!-- Home Page -->
+    <definition name="home" extends="base-definition">
+        <put-attribute name="body" value="/WEB-INF/views/pages/home.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/views/pages/footer_home.jsp"/>
+        <put-list-attribute name="stylesheets" inherit="true">
+            <add-attribute value="/static/css/unslider.css"/>
+        </put-list-attribute>
+        <put-list-attribute name="javascripts" inherit="true">
+            <add-attribute value="/static/js/unslider.min.js"/>
+            <add-attribute value="/static/js/home/home.js"/>
+        </put-list-attribute>
+    </definition>
+
+    <!-- User Login -->
+    <definition name="user/login" extends="base-definition">
+        <put-attribute name="body" value="/WEB-INF/views/pages/user/login.jsp"/>
+        <put-list-attribute name="javascripts" inherit="true">
+            <add-attribute value="/static/js/user/login.js"/>
+            <add-attribute value="/static/js/common/login.js"/>
+        </put-list-attribute>
+    </definition>
+
+    <!-- User Register -->
+    <definition name="user/register" extends="base-definition">
+        <put-attribute name="body" value="/WEB-INF/views/pages/user/register.jsp"/>
+        <put-list-attribute name="javascripts" inherit="true">
+            <add-attribute value="/static/js/user/register.js"/>
+        </put-list-attribute>
+    </definition>
+</tiles-definitions>
