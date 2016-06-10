@@ -45,7 +45,8 @@ public class WebConfig extends WebMvcConfigurerAdapter{
                 .addPathPatterns("/**")
                 .excludePathPatterns("/",
                         "/user/login**",
-                        "/user/register**");
+                        "/user/register**",
+                        "/verify/**");
     }
 
     //Multipart resolver

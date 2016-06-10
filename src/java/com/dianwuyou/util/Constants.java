@@ -17,8 +17,9 @@ public class Constants {
     public static final String KEY_USER_TOKEN = "_utoken";
     public static final String KEY_FILE_UPLOAD = "_fupload";
 
+    public static final String KEY_MOBILE_PHONE = "_mobile";
 
+    public static final String KEY_CAPTCHA_SUCC_TOKEN = "_ctoken";
     public static final String KEY_CAPTCHA_SESSION ="_captcha";
-
 
 }

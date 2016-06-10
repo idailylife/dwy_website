@@ -1,13 +1,16 @@
 package com.dianwuyou.web;
 
+import com.dianwuyou.model.User;
+import com.dianwuyou.model.json.AjaxResponseBody;
 import com.dianwuyou.util.Constants;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * Created by hebowei on 16/6/9.
@@ -57,4 +60,29 @@ public class UserController {
         }
         return "user/register";
     }
+
+    /**
+     * AJAX注册用户请求,json数据
+     *
+     * @param user
+     * @param bindingResult
+     * @param request
+     * @return
+     * 状态码:
+     *  400 - 表单验证错误
+     *  401 - Email重复
+     *  403 - 尚未通过图片/短信校验
+     *  200 - 注册成功
+     */
+    @ResponseBody
+    @RequestMapping(value = "/register", method = RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_VALUE,
+    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public AjaxResponseBody register(@RequestBody @Valid User user, BindingResult bindingResult,
+                                     HttpServletRequest request){
+        AjaxResponseBody responseBody = new AjaxResponseBody();
+        //TODO: Impl
+        return responseBody;
+    }
+
 }

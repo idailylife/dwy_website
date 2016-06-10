@@ -4,7 +4,7 @@
   User: hebowei
   Date: 16/6/9
   Time: 下午1:03
-  To change this template use File | Settings | File Templates.
+  To change this template use UpdFile | Settings | UpdFile Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
