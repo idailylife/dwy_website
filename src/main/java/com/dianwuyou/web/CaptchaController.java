@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by hebowei on 16/6/10.
@@ -93,7 +94,8 @@ public class CaptchaController {
     /**
      * 校验图片验证码
      * 会删除session中的验证码字段
-     * @param map    {captcha: REQUEST_CAPTCHA}
+     * @param map
+     *              {captcha: REQUEST_CAPTCHA}
      * @param request
      * @return
      *  状态码:
@@ -130,11 +132,12 @@ public class CaptchaController {
      * 发送校验码短信
      * 会预先判断session中存的图片验证码正确性,校验后删除图片验证码session
      * 发送成功后在session中写入md5(手机号+校验码)
-     * @param map    {phone: REQUEST_PHONE_NUMBER, token: TOKEN}
+     * @param map
+     *          {phone: REQUEST_PHONE_NUMBER, token: TOKEN}
      * @param request
      * @return
      *  状态码:
-     *      200 - 发送成功
+     *      200 - 发送成功，返回一个随机值作为token
      *      403 - 鉴权失败
      *
      */
@@ -155,15 +158,18 @@ public class CaptchaController {
                 String debugSmsCode = "1234";
                 String sessionToken = Encoding.getEncodedString(map.get("phone") + debugSmsCode);
                 request.getSession().setAttribute(Constants.KEY_MOBILE_PHONE, sessionToken);
+                String randToken = Encoding.getRandomUUID();
+                request.getSession().setAttribute(Constants.KEY_CAPTCHA_SUCC_TOKEN, randToken);
                 succFlag = true;
                 responseBody.setState(200);
-                responseBody.setContent(sessionToken);
+                responseBody.setContent(randToken);
             }
         }
         if(!succFlag){
             responseBody.setState(403);
+            request.getSession().removeAttribute(Constants.KEY_CAPTCHA_SUCC_TOKEN);
         }
-        request.getSession().removeAttribute(Constants.KEY_CAPTCHA_SUCC_TOKEN);
+
         return responseBody;
     }
 }

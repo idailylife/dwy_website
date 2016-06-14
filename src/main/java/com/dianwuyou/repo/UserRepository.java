@@ -8,6 +8,7 @@ import com.dianwuyou.model.User;
 public interface UserRepository {
     User getById(int id);
     User getByEmail(String email);
+    User getByInviteCode(String inviteCode);
     void saveUser(User user);
     void updateUser(User user);
 }

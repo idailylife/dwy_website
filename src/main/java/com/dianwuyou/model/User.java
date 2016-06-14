@@ -23,7 +23,6 @@ public class User {
     public static final int TAOBAO_RANK_LE_2DIAM = 2; //1-2钻
     public static final int TAOBAO_RANK_GE_3DIAM = 3; //3钻及以上
 
-    private String verifyToken; //用于表单鉴权的token,不存入数据库
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -136,6 +135,11 @@ public class User {
     @Version
     private Integer version;    //乐观锁
 
+    public User(){
+        score = 0L;
+        balance = 0.0;
+    }
+
     //Methods
     public void generateSaltPassword(){
         //MD5(salt + MD5(password))
@@ -148,6 +152,8 @@ public class User {
         if(! (obj instanceof User)){
             return false;
         }
+        if(((User) obj).getId() == null || this.id == null)
+            return false;
         return ((User) obj).id.equals(id);
     }
 
@@ -386,11 +392,4 @@ public class User {
         this.version = version;
     }
 
-    public String getVerifyToken() {
-        return verifyToken;
-    }
-
-    public void setVerifyToken(String verifyToken) {
-        this.verifyToken = verifyToken;
-    }
 }

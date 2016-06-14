@@ -4,6 +4,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 /**
  * Created by hebowei on 16/6/10.
+ * Http请求返回的通用Json数据
+ * {
+ *     state: 状态码,
+ *     message: 消息,
+ *     content: 内容
+ * }
  */
 public class AjaxResponseBody {
     @JsonView(JsonDummyView.Public.class)

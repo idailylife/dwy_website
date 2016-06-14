@@ -4,6 +4,7 @@ import com.dianwuyou.model.User;
 import com.dianwuyou.util.Constants;
 import com.dianwuyou.util.Encoding;
 import com.dianwuyou.repo.UserRepository;
+import com.dianwuyou.web.exception.ModelObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -162,5 +163,18 @@ public class UserServiceImpl implements UserService {
         } else {
             model.addAttribute("loginState", false);
         }
+    }
+
+    public User findByInviteCode(String inviteCode) {
+        return userRepository.getByInviteCode(inviteCode);
+    }
+
+    public User getFromSession(HttpServletRequest request){
+        Integer uid = (Integer)request.getSession().getAttribute(Constants.KEY_USER_UID);
+        User user =  findById(uid);
+        if(user == null){
+            throw new ModelObjectNotFoundException("Cannot find such user with uid=" + uid);
+        }
+        return user;
     }
 }

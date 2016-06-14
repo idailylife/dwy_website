@@ -22,4 +22,5 @@ public class Constants {
     public static final String KEY_CAPTCHA_SUCC_TOKEN = "_ctoken";
     public static final String KEY_CAPTCHA_SESSION ="_captcha";
 
+    public static final int SCORE_INVITE_WORKER = 10;   //推广worker注册有10积分
 }

@@ -31,4 +31,6 @@ public interface UserService {
     int verify(int uid, String token);
     int maintainLoginState(HttpServletRequest request, HttpServletResponse response) throws IOException;
     void loginStateParse(Model model, Integer uid);
+    User findByInviteCode(String inviteCode);
+    User getFromSession(HttpServletRequest request);
 }
