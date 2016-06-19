@@ -158,14 +158,20 @@ public class UserController {
     /**
      * AJAX注册用户请求,json string:
      *                      `JSON.stringify(jsonObj)`
+     *
+     * 注册验证流程:
+     * 1. (见CaptchaController)图片校验码显示、验证 --> token1
+     * 2. (见CaptchaController)token1-->发短信验证码-->token2
+     * 3. token2 --> 此处 --> 数据库写入
+     *
      * Request格式:
      * {
      *     type: 用户类型，0-requester, 1-worker
      *     email: 邮箱,
      *     password: md5(密码),
      *     phoneNumber: 手机号,
-     *     taobaoId: 淘宝账号,
-     *     inviteCode: 邀请码，可选,
+     *     taobaoId: 淘宝账号, 可选,
+     *     inviteCode: 邀请码, 可选,
      *     verifyCode: 短信验证码,
      *     token: 上一次请求成功返回的token
      * }

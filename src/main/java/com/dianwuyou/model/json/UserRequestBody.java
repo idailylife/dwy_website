@@ -19,7 +19,6 @@ public class UserRequestBody {
     @NotNull
     private String phoneNumber;
 
-    @NotNull
     private String taobaoId;
 
     private String inviteCode;

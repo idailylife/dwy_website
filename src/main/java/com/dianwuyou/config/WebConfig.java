@@ -46,6 +46,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
                 .excludePathPatterns("/",
                         "/user/login**",
                         "/user/register**",
+                        "/task/all**",
                         "/verify/**");
     }
 

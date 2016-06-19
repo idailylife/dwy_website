@@ -42,8 +42,17 @@
     <!-- User Register -->
     <definition name="user/register" extends="base-definition">
         <put-attribute name="body" value="/WEB-INF/views/pages/user/register.jsp"/>
+        <put-list-attribute name="stylesheets" inherit="true">
+            <add-attribute value="/static/css/user/register.css"/>
+        </put-list-attribute>
         <put-list-attribute name="javascripts" inherit="true">
             <add-attribute value="/static/js/user/register.js"/>
         </put-list-attribute>
+    </definition>
+
+    <!-- Task List-All -->
+    <definition name="task/all" extends="base-definition">
+        <put-attribute name="body" value="/WEB-INF/views/pages/task/list_all.jsp"/>
+
     </definition>
 </tiles-definitions>

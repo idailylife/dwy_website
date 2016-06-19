@@ -23,6 +23,21 @@ public class User {
     public static final int TAOBAO_RANK_LE_2DIAM = 2; //1-2钻
     public static final int TAOBAO_RANK_GE_3DIAM = 3; //3钻及以上
 
+    public static Double getUnitPrice(int RANK){
+        switch (RANK){
+            case TAOBAO_RANK_LE_2STAR:
+                return 5.0;
+            case TAOBAO_RANK_LE_5STAR:
+                return 6.0;
+            case TAOBAO_RANK_LE_2DIAM:
+                return 7.0;
+            case TAOBAO_RANK_GE_3DIAM:
+                return 8.0;
+            default:
+                return 0.0;
+        }
+    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -131,6 +146,9 @@ public class User {
     @Column(name = "qq")
     private String qq;
 
+    @Column(name = "reputation")
+    private Integer reputation;
+
     @Column(name = "version")
     @Version
     private Integer version;    //乐观锁
@@ -138,6 +156,7 @@ public class User {
     public User(){
         score = 0L;
         balance = 0.0;
+        reputation = 0;
     }
 
     //Methods
@@ -392,4 +411,11 @@ public class User {
         this.version = version;
     }
 
+    public Integer getReputation() {
+        return reputation;
+    }
+
+    public void setReputation(Integer reputation) {
+        this.reputation = reputation;
+    }
 }
