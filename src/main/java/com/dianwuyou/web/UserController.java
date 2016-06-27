@@ -263,5 +263,11 @@ public class UserController {
         response.sendRedirect(request.getContextPath());
     }
 
+    @RequestMapping(value = "/verify", method = RequestMethod.GET)
+    public String verifyUser(HttpServletRequest request, Model model){
+        User user = userService.getFromSession(request);
+        model.addAttribute("user", user);
+        return "user/verify";
+    }
 
 }

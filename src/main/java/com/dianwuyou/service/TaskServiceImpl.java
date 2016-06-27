@@ -42,6 +42,6 @@ public class TaskServiceImpl implements TaskService{
     }
 
     public Long getPageCount(int pageSize) {
-        return taskRepository.getTaskCount() / pageSize;
+        return (taskRepository.getTaskCount() - 1) / pageSize + 1;
     }
 }

@@ -3,6 +3,7 @@ package com.dianwuyou.web;
 
 import com.dianwuyou.model.Task;
 import com.dianwuyou.service.TaskService;
+import com.dianwuyou.web.exception.ModelObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +32,7 @@ public class TaskController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/all/{page}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/all/{page}", method = RequestMethod.GET)
     public String listAll(@PathVariable("page") Integer page, Model model){
         listAllTasks(page - 1, model);
         return "task/all";
@@ -53,6 +54,9 @@ public class TaskController {
         Long pageCount = taskService.getPageCount(TASKS_PER_PAGE);
         if(pageCount > PAGE_NUMBER_MAXIMUM)
             pageCount = PAGE_NUMBER_MAXIMUM;
+        if(tasks.isEmpty() || page < 0){
+            throw new ModelObjectNotFoundException("Cannot find such page.");
+        }
         model.addAttribute("tasks", tasks);
         model.addAttribute("pageCount", pageCount);
         model.addAttribute("currentPage", page + 1);

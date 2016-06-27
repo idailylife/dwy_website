@@ -47,6 +47,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
                         "/user/login**",
                         "/user/register**",
                         "/task/all**",
+                        "/task/all/**",
                         "/verify/**");
     }
 

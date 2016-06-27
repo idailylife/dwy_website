@@ -50,9 +50,20 @@
         </put-list-attribute>
     </definition>
 
+    <!-- User: Verification -->
+    <definition name="user/verify" extends="base-definition">
+        <put-attribute name="body" value="/WEB-INF/views/pages/user/verify_user.jsp"/>
+        <put-list-attribute name="javascripts" inherit="true">
+            <add-attribute value="/static/js/jquery.validate.min.js"/>
+            <add-attribute value="/static/js/vCode.js"/>
+            <add-attribute value="/static/js/PCASClass.js"/>
+        </put-list-attribute>
+
+    </definition>
+
     <!-- Task List-All -->
     <definition name="task/all" extends="base-definition">
         <put-attribute name="body" value="/WEB-INF/views/pages/task/list_all.jsp"/>
-
     </definition>
+
 </tiles-definitions>
