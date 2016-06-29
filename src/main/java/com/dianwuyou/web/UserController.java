@@ -98,12 +98,13 @@ public class UserController {
             responseBody.setContent(Misc.parseBindingFieldErrors(bindingResult).toString());
             return responseBody;
         }
-        if(!Constants.DEBUG && !CaptchaController.testCaptcha(loginRequestBody.getCaptcha(),request)){
-            responseBody.setState(401);
-            responseBody.setMessage("Wrong captcha");
-            request.getSession().removeAttribute(Constants.KEY_CAPTCHA_SESSION);
-            return responseBody;
-        }
+//        if(!Constants.DEBUG && !CaptchaController.testCaptcha(loginRequestBody.getCaptcha(),request)){
+//            responseBody.setState(401);
+//            responseBody.setMessage("Wrong captcha");
+//            request.getSession().removeAttribute(Constants.KEY_CAPTCHA_SESSION);
+//            return responseBody;
+//        }
+        // Un-comment above code to enable captcha check
         int checkState = userService.verify(loginRequestBody.getEmail(), loginRequestBody.getPassword());
         switch (checkState) {
             case UserService.ERR_WRONG_PASSWORD:
@@ -125,14 +126,23 @@ public class UserController {
                 currUser.setToken(Encoding.getRandomUUID());
                 userService.updateUser(currUser);
                 request.getSession().setAttribute(Constants.KEY_USER_UID, currUser.getId());
-                Cookie uidCookie = new Cookie(Constants.KEY_USER_UID, currUser.getId().toString());
-                uidCookie.setMaxAge(7 * 24 * 3600); //7days
-                uidCookie.setPath(request.getContextPath());
-                response.addCookie(uidCookie);
-                Cookie tokenCookie = new Cookie(Constants.KEY_USER_TOKEN, currUser.getToken());
-                tokenCookie.setMaxAge(7 * 24 * 3600);
-                tokenCookie.setPath(request.getContextPath());
-                response.addCookie(tokenCookie);
+
+                if(loginRequestBody.getRemember() != null &&
+                        loginRequestBody.getRemember()){
+                    String contextPath = request.getContextPath();
+                    if(contextPath.length() < 1){
+                        contextPath = "/";
+                    }
+                    Cookie uidCookie = new Cookie(Constants.KEY_USER_UID, currUser.getId().toString());
+                    uidCookie.setMaxAge(7 * 24 * 3600); //7days
+                    uidCookie.setPath(contextPath);
+                    response.addCookie(uidCookie);
+                    Cookie tokenCookie = new Cookie(Constants.KEY_USER_TOKEN, currUser.getToken());
+                    tokenCookie.setMaxAge(7 * 24 * 3600);
+                    tokenCookie.setPath(contextPath);
+                    response.addCookie(tokenCookie);
+                }
+
                 break;
             default:
                 responseBody.setState(500);
@@ -260,7 +270,8 @@ public class UserController {
             response.addCookie(uidCookie);
             response.addCookie(tokenCookie);
         }
-        response.sendRedirect(request.getContextPath());
+
+        response.sendRedirect(request.getContextPath() + "/");
     }
 
     @RequestMapping(value = "/verify", method = RequestMethod.GET)

@@ -39,9 +39,21 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">登陆</a></li>
-                <li><a href="#">注册</a></li>
+                <c:choose>
+                    <c:when test="${loginState}">
+                        <li><a href="<c:url value="#"/> ">${displayName}</a></li>
+                        <li><a href="<c:url value="/user/logout"/> ">注销</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="<c:url value="/user/login"/> ">登陆</a></li>
+                        <li><a href="<c:url value="/user/register"/> ">注册</a></li>
+                    </c:otherwise>
+                </c:choose>
+
             </ul>
         </div>
     </div>
 </div>
+<script>
+    var homeUrl = "<c:url value="/"/>";
+</script>

@@ -28,13 +28,13 @@
                             <br />
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="remember-me"> 记住我
+                                    <input type="checkbox" id="checkRemember" value="remember-me"> 记住我
                                 </label>
                             </div>
                             <div class="row">
                                 <div class="col-md-3"></div>
                                 <div class="col-md-3">
-                                    <button class="btn btn-primary" type="submit">登录</button>
+                                    <button class="btn btn-primary" id="btnSubmitLogin" type="submit">登录</button>
                                 </div>
                                 <div class="col-md-3">
                                     <button class="btn btn-default"><a href="<c:url value="/user/register"/> ">现在注册</a></button>

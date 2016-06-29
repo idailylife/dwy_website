@@ -34,6 +34,7 @@
     <definition name="user/login" extends="base-definition">
         <put-attribute name="body" value="/WEB-INF/views/pages/user/login.jsp"/>
         <put-list-attribute name="javascripts" inherit="true">
+            <add-attribute value="/static/js/md5.js"/>
             <add-attribute value="/static/js/user/login.js"/>
             <add-attribute value="/static/js/common/login.js"/>
         </put-list-attribute>

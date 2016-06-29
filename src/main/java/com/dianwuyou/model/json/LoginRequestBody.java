@@ -1,5 +1,6 @@
 package com.dianwuyou.model.json;
 
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -13,7 +14,10 @@ public class LoginRequestBody {
     @NotNull
     String password;
 
-    String captcha; //Preserved for further use
+    //@NotNull
+    String captcha;
+
+    Boolean remember;
 
 
     public String getEmail() {
@@ -38,5 +42,13 @@ public class LoginRequestBody {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
+    }
+
+    public Boolean getRemember() {
+        return remember;
+    }
+
+    public void setRemember(Boolean remember) {
+        this.remember = remember;
     }
 }
