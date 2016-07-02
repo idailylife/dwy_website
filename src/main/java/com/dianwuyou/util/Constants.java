@@ -6,7 +6,7 @@ package com.dianwuyou.util;
 public class Constants {
     public static final boolean DEBUG = false;
 
-    public static final String UPLOAD_FILE_STORE_LOCATION = "/Users/hebowei/IdeaProjects/dwy_website/src/webapp/static/img/upload/";
+    public static final String UPLOAD_FILE_STORE_LOCATION = "/Users/hebowei/IdeaProjects/dwy_website/src/main/webapp/static/img/upload/";
             //"D:/Code/Java/CreativeCrowd/src/main/webapp/static/img/upload/";
     public static final long MAX_FILE_SIZE = 5242880;  //5MB
     public static final long MAX_REQUEST_SIZE = 20971520;  //20MB

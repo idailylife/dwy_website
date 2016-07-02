@@ -1,6 +1,7 @@
 package com.dianwuyou.web;
 
 import com.dianwuyou.model.User;
+import com.dianwuyou.model.UserValdation;
 import com.dianwuyou.model.json.AjaxResponseBody;
 import com.dianwuyou.model.json.LoginRequestBody;
 import com.dianwuyou.model.json.UserRequestBody;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -274,11 +276,39 @@ public class UserController {
         response.sendRedirect(request.getContextPath() + "/");
     }
 
+    /**
+     * 用户实名认证(GET)
+     * @param request
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
     public String verifyUser(HttpServletRequest request, Model model){
         User user = userService.getFromSession(request);
         model.addAttribute("user", user);
         return "user/verify";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/verify", method = RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+    public AjaxResponseBody submitUserVerify(@Valid UserValdation userValdation,
+                                             BindingResult bindingResult,
+                                             HttpServletRequest request)
+    throws IOException, SQLException{
+        AjaxResponseBody responseBody = new AjaxResponseBody();
+        User user = userService.getFromSession(request);
+        if(user == null){
+          responseBody.setState(403);
+        } else if(bindingResult.hasErrors()){
+            responseBody.setState(400);
+            //TODO: return error fields
+        } else {
+            user.fillPersionInfo(userValdation);
+            userService.updateUser(user);
+            responseBody.setState(200);
+        }
+        return responseBody;
     }
 
 }

@@ -58,6 +58,7 @@
             <add-attribute value="/static/js/jquery.validate.min.js"/>
             <add-attribute value="/static/js/vCode.js"/>
             <add-attribute value="/static/js/PCASClass.js"/>
+            <add-attribute value="/static/js/user/verify.js"/>
         </put-list-attribute>
 
     </definition>

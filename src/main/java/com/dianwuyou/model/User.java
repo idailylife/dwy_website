@@ -1,13 +1,18 @@
 package com.dianwuyou.model;
 
 import com.dianwuyou.util.Encoding;
+import com.mysql.jdbc.Blob;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by hebowei on 16/6/10.
@@ -64,6 +69,10 @@ public class User {
     @Column(name = "token")
     @Length(max = 64)
     private String token;
+
+    @Column(name = "gender")
+    @Length(max = 10)
+    private String gender;
 
     @Column(name = "phone_number", nullable = false)
     @Length(min = 11, max = 45)
@@ -149,6 +158,14 @@ public class User {
     @Column(name = "reputation")
     private Integer reputation;
 
+    @NotNull
+    @Column(name = "user_validation_state")
+    private Integer userValidationState;    //0 - Not validated, 1 - Verified, 2 - Failed
+
+    @NotNull
+    @Column(name = "shop_validation_state")
+    private Integer shopValidationState;    //0 - Not validated, 1 - Verified, 2 - Failed
+
     @Column(name = "version")
     @Version
     private Integer version;    //乐观锁
@@ -157,9 +174,33 @@ public class User {
         score = 0L;
         balance = 0.0;
         reputation = 0;
+        userValidationState = 0;
+        shopValidationState = 0;
     }
 
     //Methods
+    public void fillPersionInfo(UserValdation userValdation)
+            throws IOException, SQLException{
+        realName = userValdation.realName;
+        personalId = userValdation.personalId;
+        gender = userValdation.gender;
+        age = userValdation.age;
+        taobaoRank = userValdation.taobaoRank;
+        alipayId = userValdation.alipayId;
+        province = userValdation.province;
+        city = userValdation.city;
+        district = userValdation.district;
+        streetAddress = userValdation.streetAddress;
+        idPhoto = new UpdFile();
+        idPhoto.setFilename(userValdation.idPhoto.getOriginalFilename());
+        idPhoto.setContent(new SerialBlob(
+                userValdation.idPhoto.getBytes()
+        ));
+        idPhoto1 = new UpdFile();
+        idPhoto1.setFilename(userValdation.idPhoto1.getOriginalFilename());
+        idPhoto1.setContent(new SerialBlob(userValdation.idPhoto1.getBytes()));
+    }
+
     public void generateSaltPassword(){
         //MD5(salt + MD5(password))
         //Assume the password is already encoded at the frontend
@@ -417,5 +458,29 @@ public class User {
 
     public void setReputation(Integer reputation) {
         this.reputation = reputation;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Integer getUserValidationState() {
+        return userValidationState;
+    }
+
+    public void setUserValidationState(Integer userValidationState) {
+        this.userValidationState = userValidationState;
+    }
+
+    public Integer getShopValidationState() {
+        return shopValidationState;
+    }
+
+    public void setShopValidationState(Integer shopValidationState) {
+        this.shopValidationState = shopValidationState;
     }
 }

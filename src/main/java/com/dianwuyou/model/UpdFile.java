@@ -7,6 +7,7 @@ import java.sql.Blob;
 
 /**
  * Created by hebowei on 16/6/10.
+ * 上传的(隐私)文件存储在这
  */
 @Entity
 @Table(name = "file")
