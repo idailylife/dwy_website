@@ -9,9 +9,8 @@ import com.dianwuyou.service.UserService;
 import com.dianwuyou.util.Constants;
 import com.dianwuyou.util.Encoding;
 import com.dianwuyou.util.Misc;
-import com.dianwuyou.web.exception.ModelObjectNotFoundException;
-import com.sun.tools.internal.jxc.ap.Const;
-import com.sun.tools.internal.ws.wsdl.document.Binding;
+
+import com.dianwuyou.web.exception.UnAuthorizedException;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -311,4 +310,19 @@ public class UserController {
         return responseBody;
     }
 
+    /**
+     * 商铺认证
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/verifyShop", method = RequestMethod.GET)
+    public String verifyShop(HttpServletRequest request, Model model){
+        User user = userService.getFromSession(request);
+        if(!user.getType().equals(User.USERTYPE_REQUESTER)){
+            throw new UnAuthorizedException();
+        }
+        model.addAttribute("user", user);
+        return "user/verifyShop";
+    }
 }

@@ -90,7 +90,7 @@ public class User {
 
     @Column(name = "taobao_id")
     @Length(max = 64)
-    private String taobaoId;
+    private String taobaoId;    //淘宝旺旺id
 
     @Column(name = "invite_code")
     @Length(max = 64)

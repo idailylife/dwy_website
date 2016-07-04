@@ -60,7 +60,21 @@
             <add-attribute value="/static/js/PCASClass.js"/>
             <add-attribute value="/static/js/user/verify.js"/>
         </put-list-attribute>
+    </definition>
 
+    <!-- User shop verification -->
+    <definition name="user/verifyShop" extends="base-definition">
+        <put-attribute name="body" value="/WEB-INF/views/pages/user/verify_shop.jsp"/>
+        <put-list-attribute name="javascripts" inherit="true">
+            <add-attribute value="/static/js/bootstrap-senser-customed.min.js"/>
+            <add-attribute value="/static/js/modernizr_senser.custom.js"/>
+            <add-attribute value="/static/js/unslider.min.js"/>
+            <add-attribute value="/static/js/user/verifyShop.js"/>
+        </put-list-attribute>
+        <put-list-attribute name="stylesheets">
+            <add-attribute value="/static/css/bootstrap-senser-customed.min.css"/>
+            <add-attribute value="/static/css/main-senser.css"/>
+        </put-list-attribute>
     </definition>
 
     <!-- Task List-All -->
