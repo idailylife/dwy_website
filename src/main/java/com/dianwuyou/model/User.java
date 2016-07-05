@@ -191,14 +191,25 @@ public class User {
         city = userValdation.city;
         district = userValdation.district;
         streetAddress = userValdation.streetAddress;
-        idPhoto = new UpdFile();
-        idPhoto.setFilename(userValdation.idPhoto.getOriginalFilename());
+        idPhoto = new UpdFile(this.id);
+        idPhoto.setFilenameWithUuid16(userValdation.idPhoto.getOriginalFilename());
         idPhoto.setContent(new SerialBlob(
                 userValdation.idPhoto.getBytes()
         ));
-        idPhoto1 = new UpdFile();
-        idPhoto1.setFilename(userValdation.idPhoto1.getOriginalFilename());
+        idPhoto1 = new UpdFile(this.id);
+        idPhoto1.setFilenameWithUuid16(userValdation.idPhoto1.getOriginalFilename());
         idPhoto1.setContent(new SerialBlob(userValdation.idPhoto1.getBytes()));
+    }
+
+    public void fillShopInfo(ShopValidation shopValidation)
+        throws IOException, SQLException{
+        taobaoId = shopValidation.taobaoId;
+        qq = shopValidation.qq;
+        screenshotImg = new UpdFile();
+        screenshotImg.setFilenameWithUuid16(shopValidation.screenshotImg.getOriginalFilename());
+        screenshotImg.setContent(new SerialBlob(
+                shopValidation.screenshotImg.getBytes()
+        ));
     }
 
     public void generateSaltPassword(){

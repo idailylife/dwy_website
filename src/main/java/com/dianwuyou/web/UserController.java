@@ -1,5 +1,6 @@
 package com.dianwuyou.web;
 
+import com.dianwuyou.model.ShopValidation;
 import com.dianwuyou.model.User;
 import com.dianwuyou.model.UserValdation;
 import com.dianwuyou.model.json.AjaxResponseBody;
@@ -18,10 +19,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -297,9 +296,10 @@ public class UserController {
     throws IOException, SQLException{
         AjaxResponseBody responseBody = new AjaxResponseBody();
         User user = userService.getFromSession(request);
-        if(user == null){
-          responseBody.setState(403);
-        } else if(bindingResult.hasErrors()){
+        //if(user == null){
+        //  responseBody.setState(403);
+        //} else if(bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()){
             responseBody.setState(400);
             //TODO: return error fields
         } else {
@@ -324,5 +324,25 @@ public class UserController {
         }
         model.addAttribute("user", user);
         return "user/verifyShop";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/verifyShop", method = RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+    public AjaxResponseBody verifyShopSubmit(
+            @Valid ShopValidation shopValidation,
+            BindingResult bindingResult,
+            HttpServletRequest request) throws IOException, SQLException{
+        AjaxResponseBody responseBody = new AjaxResponseBody();
+        User user = userService.getFromSession(request);
+        if(bindingResult.hasErrors()){
+            responseBody.setState(400);
+            //TODO: return error fields
+        } else {
+            user.fillShopInfo(shopValidation);
+            userService.updateUser(user);
+            responseBody.setState(200);
+        }
+        return responseBody;
     }
 }

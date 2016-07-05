@@ -1,5 +1,6 @@
 package com.dianwuyou.model;
 
+import com.dianwuyou.util.Encoding;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -21,9 +22,29 @@ public class UpdFile {
     @Length(max = 128)
     private String filename;
 
+    @Column(name = "owner", nullable = false)
+    private Integer owner;    //Set to OWNER_PUBLIC for public visibility
+    public final static int OWNER_PUBLIC = 0;
+
     @Column(name = "content", nullable = false)
     @Lob
     private Blob content;
+
+    public UpdFile(){
+        owner = OWNER_PUBLIC;
+    }
+
+    public UpdFile(int ownerId){
+        owner = ownerId;
+    }
+
+    /**
+     * Add random uuid(trimmed to 16 bytes) as the prefix of filename
+     * @param filename
+     */
+    public void setFilenameWithUuid16(String filename){
+        this.filename = Encoding.getRandomUUID().substring(16) + "_" + filename;
+    }
 
     public Long getId() {
         return id;
@@ -47,5 +68,13 @@ public class UpdFile {
 
     public void setContent(Blob content) {
         this.content = content;
+    }
+
+    public Integer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Integer owner) {
+        this.owner = owner;
     }
 }
