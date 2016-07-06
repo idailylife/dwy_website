@@ -28,6 +28,11 @@ public class User {
     public static final int TAOBAO_RANK_LE_2DIAM = 2; //1-2钻
     public static final int TAOBAO_RANK_GE_3DIAM = 3; //3钻及以上
 
+    public static final int VERIFY_STATE_UNSUBMITTED = 0;   //未提交验证
+    public static final int VERIFY_STATE_SUBMITTED = 1;     //已提交待审核
+    public static final int VERIFY_STATE_FAILED = -1;       //审核失败
+    public static final int VERIFY_STATE_SUCCEEDED = 2;     //审核成功
+
     public static Double getUnitPrice(int RANK){
         switch (RANK){
             case TAOBAO_RANK_LE_2STAR:
@@ -160,11 +165,11 @@ public class User {
 
     @NotNull
     @Column(name = "user_validation_state")
-    private Integer userValidationState;    //0 - Not validated, 1 - Verified, 2 - Failed
+    private Integer userValidationState;
 
     @NotNull
     @Column(name = "shop_validation_state")
-    private Integer shopValidationState;    //0 - Not validated, 1 - Verified, 2 - Failed
+    private Integer shopValidationState;
 
     @Column(name = "version")
     @Version

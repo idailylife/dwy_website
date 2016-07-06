@@ -57,7 +57,7 @@
                                         <hr />
                                         <div class="form-group">
                                             <div class="col-sm-offset-3 col-sm-10">
-                                                <button id="shopvarify" type="submit" class="btn btn-primary">立即验证店铺</button>
+                                                <button id="btnShopverify" type="button" class="btn btn-primary">立即验证店铺</button>
                                             </div>
                                         </div>
                                     </form>

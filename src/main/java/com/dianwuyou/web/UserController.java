@@ -345,4 +345,9 @@ public class UserController {
         }
         return responseBody;
     }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String userCenter(HttpServletRequest request, Model model){
+        return "user";
+    }
 }

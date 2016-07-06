@@ -46,6 +46,14 @@ public class UpdFile {
         this.filename = Encoding.getRandomUUID().substring(16) + "_" + filename;
     }
 
+    public boolean hasAuthority(int userId){
+        if(owner.equals(OWNER_PUBLIC))
+            return true;
+        else if(owner.equals(userId))
+            return true;
+        return false;
+    }
+
     public Long getId() {
         return id;
     }

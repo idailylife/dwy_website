@@ -77,6 +77,21 @@
         </put-list-attribute>
     </definition>
 
+    <!-- User center -->
+    <definition name="user" extends="base-definition">
+        <put-attribute name="body" value="/WEB-INF/views/pages/user/usercenter.jsp"/>
+        <put-list-attribute name="javascripts" inherit="true">
+            <add-attribute value="/static/js/bootstrap-senser-customed.min.js"/>
+            <add-attribute value="/static/js/modernizr_senser.custom.js"/>
+            <add-attribute value="/static/js/unslider.min.js"/>
+            <add-attribute value="/static/js/user/usercenter.js"/>
+        </put-list-attribute>
+        <put-list-attribute name="stylesheets">
+            <add-attribute value="/static/css/bootstrap-senser-customed.min.css"/>
+            <add-attribute value="/static/css/main-senser.css"/>
+        </put-list-attribute>
+    </definition>
+
     <!-- Task List-All -->
     <definition name="task/all" extends="base-definition">
         <put-attribute name="body" value="/WEB-INF/views/pages/task/list_all.jsp"/>
