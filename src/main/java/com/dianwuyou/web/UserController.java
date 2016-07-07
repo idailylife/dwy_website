@@ -348,6 +348,8 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String userCenter(HttpServletRequest request, Model model){
+        User user = userService.getFromSession(request);
+        model.addAttribute("user", user);
         return "user";
     }
 }

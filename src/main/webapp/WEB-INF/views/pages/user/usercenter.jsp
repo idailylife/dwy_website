@@ -31,11 +31,11 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <h1><small>基本信息</small></h1>
-                                    <p>账户名称：<span>d5u</span></p>
-                                    <p>电子邮箱：<span>805501556@qq.com</span></p>
-                                    <p>手机号码：<span>18758179616 </span></p>
-                                    <p>上次登录：<span>2016-06-14 10:24:44</span></p>
-                                    <p>实名认证：<span>已认证/认证进度：</span></p>
+                                    <p>账户编号：<span>${user.id}</span></p>
+                                    <p>电子邮箱：<span>${user.email}</span></p>
+                                    <p>手机号码：<span>${user.phoneNumber ? user.phoneNumber : "未填写"} </span></p>
+                                    <p>用户类型：<span>${user.userTypeString}</span></p>
+                                    <p>实名认证：<span>${user.validationStateString}</span></p>
                                 </div>
                             </div>
                             <hr />

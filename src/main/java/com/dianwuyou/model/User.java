@@ -183,7 +183,41 @@ public class User {
         shopValidationState = 0;
     }
 
-    //Methods
+    //methods
+    public String getUserTypeString(){
+        switch (type){
+            case USERTYPE_REQUESTER:
+                return "店家";
+            case USERTYPE_WORKER:
+                return "接手";
+            default:
+                return "未知";
+        }
+    }
+
+    public String getValidationStateString(){
+        int state;
+        if(type == USERTYPE_REQUESTER)
+            state = shopValidationState;
+        else if (type == USERTYPE_WORKER)
+            state = userValidationState;
+        else
+            state = Integer.MIN_VALUE;
+
+        switch (state){
+            case VERIFY_STATE_FAILED:
+                return "验证失败";
+            case VERIFY_STATE_SUBMITTED:
+                return "已提交,待审核";
+            case VERIFY_STATE_SUCCEEDED:
+                return "验证通过";
+            case VERIFY_STATE_UNSUBMITTED:
+                return "尚未提交";
+            default:
+                return "未知状态";
+        }
+    }
+
     public void fillPersionInfo(UserValdation userValdation)
             throws IOException, SQLException{
         realName = userValdation.realName;
@@ -499,4 +533,5 @@ public class User {
     public void setShopValidationState(Integer shopValidationState) {
         this.shopValidationState = shopValidationState;
     }
+
 }
