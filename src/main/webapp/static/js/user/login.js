@@ -21,7 +21,7 @@ $(document).ready(function () {
             success: function (data) {
                 switch (data.state){
                     case 200:
-                        window.location.href = homeUrl;
+                        window.location.href = homeUrl + $('#nextUrl').val();
                         break;
                     default:
                         alert("错误" + data.state + ": " + data.message);

@@ -172,4 +172,7 @@ public class CaptchaController {
 
         return responseBody;
     }
+
+    //TODO: 用户登录情况下发送短信验证码
+
 }

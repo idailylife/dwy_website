@@ -184,6 +184,11 @@ public class User {
     }
 
     //methods
+    public boolean isPasswordRight(String passwordMd5){
+        String salted = Encoding.getEncodedString(salt + passwordMd5);
+        return salted.equals(password);
+    }
+
     public String getUserTypeString(){
         switch (type){
             case USERTYPE_REQUESTER:

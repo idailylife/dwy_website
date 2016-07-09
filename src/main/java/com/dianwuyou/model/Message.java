@@ -3,6 +3,7 @@ package com.dianwuyou.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by hebowei on 16/7/7.
@@ -19,10 +20,14 @@ public class Message {
     @Column(name = "id", unique = true)
     private Integer id;
 
-    @Column(name = "senderId")
+    @Column(name = "sendtime", nullable = false, columnDefinition = "DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date sendTime;
+
+    @Column(name = "sender_id")
     private Integer senderId;     //null as system message
 
-    @Column(name = "receiverId", nullable = false)
+    @Column(name = "receiver_id", nullable = false)
     private Integer receiverId;
 
     @Column(name = "type", nullable = false)
@@ -37,6 +42,18 @@ public class Message {
     @Column(name = "read")
     @Type(type = "yes_no")
     private Boolean read;
+
+    public Message(){
+        read = false;
+        sendTime = new Date();
+    }
+
+    public String getReadStr(){
+        if(read)
+            return "已读";
+        else
+            return "未读";
+    }
 
     public Integer getId() {
         return id;
@@ -92,5 +109,13 @@ public class Message {
 
     public void setRead(Boolean read) {
         this.read = read;
+    }
+
+    public Date getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(Date sendTime) {
+        this.sendTime = sendTime;
     }
 }

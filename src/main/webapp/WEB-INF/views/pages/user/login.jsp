@@ -20,6 +20,7 @@
                     <div class="col-md-4"></div>
                     <div class="col-md-4">
                         <form>
+                            <input type="hidden" id="nextUrl" value="${nextUrl}">
                             <label for="inputEmail" class="sr-only">账号</label>
                             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                             <br />

@@ -1,11 +1,14 @@
 package com.dianwuyou.web;
 
+import com.dianwuyou.model.Message;
 import com.dianwuyou.model.ShopValidation;
 import com.dianwuyou.model.User;
 import com.dianwuyou.model.UserValdation;
 import com.dianwuyou.model.json.AjaxResponseBody;
 import com.dianwuyou.model.json.LoginRequestBody;
+import com.dianwuyou.model.json.PasswordChangeRequestBody;
 import com.dianwuyou.model.json.UserRequestBody;
+import com.dianwuyou.service.MessageService;
 import com.dianwuyou.service.UserService;
 import com.dianwuyou.util.Constants;
 import com.dianwuyou.util.Encoding;
@@ -20,13 +23,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import sun.security.util.Password;
 
+import javax.naming.Binding;
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +45,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    MessageService messageService;
 
     /**
      * 用户登录,GET请求
@@ -347,9 +357,69 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String userCenter(HttpServletRequest request, Model model){
+    public String userCenter(HttpServletRequest request, Model model,
+                             @RequestParam(name = "tabId", required = false) String tabId,
+                             @RequestParam(name = "pageNo", required = false) Integer pageNo){
         User user = userService.getFromSession(request);
+        if(tabId == null){
+            tabId = "home";
+        }
+        if(pageNo == null){
+            pageNo = 1;
+        }
+        int messagePage = 1;
+        if(tabId.equals("message")){
+            messagePage = pageNo;
+        }
+        List<Message> messages = messageService.getByReceiver(user.getId(), messagePage);
+
         model.addAttribute("user", user);
+        model.addAttribute("tabId", tabId); //current tab
+        //model.addAttribute("pageNo", pageNo);   //page of current tab (if required like in messages)
+        model.addAttribute("messages", messages);
+        model.addAttribute("messagePage", messagePage);
+        model.addAttribute("messageTotalPage", messageService.getPageCount(user.getId()));
+
         return "user";
     }
+
+    /**
+     * 修改密码处理
+     * 前置条件:用户先点击"获取验证码", 得到验证码后在request里填入
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_VALUE,
+    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public AjaxResponseBody changePassword(HttpServletRequest request,
+                                           @Valid PasswordChangeRequestBody passwordChangeRequestBody,
+                                           BindingResult bindingResult){
+        AjaxResponseBody responseBody = new AjaxResponseBody();
+        if(bindingResult.hasErrors()){
+            responseBody.setState(400);
+            responseBody.setMessage("Illegal request format");
+        } else {
+            String smsVerifyCode = (String) request.getSession().getAttribute(Constants.KEY_CHG_PSWD_MOBILE_VCODE);
+            if(smsVerifyCode == null || !smsVerifyCode.equals(passwordChangeRequestBody.getPhoneVerifyCode())){
+                responseBody.setState(402);
+                responseBody.setMessage("Wrong phone verify code");
+            } else {
+                User user = userService.getFromSession(request);
+                if(user.isPasswordRight(passwordChangeRequestBody.getOldPasswordMd5())){
+                    user.setPassword(passwordChangeRequestBody.getNewPasswordMd5());
+                    userService.setSaltPassword(user);
+                    userService.updateUser(user);
+                    responseBody.setState(200);
+                } else {
+                    responseBody.setState(401);
+                    responseBody.setMessage("Request password is incorrect");
+                }
+            }
+            request.getSession().removeAttribute(Constants.KEY_CHG_PSWD_MOBILE_VCODE);
+        }
+        return responseBody;
+    }
+
 }
