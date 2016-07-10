@@ -56,7 +56,14 @@ public class UserServiceImpl implements UserService {
         if(user.getSalt() == null){
             user.setSalt(Encoding.getSalt());
         }
-        user.generateSaltPassword();
+        user.generateSaltPassword(false);
+    }
+
+    public void setSaltTransactionPassword(User user) {
+        if(user.getSalt() == null){
+            user.setSalt(Encoding.getSalt());
+        }
+        user.generateSaltPassword(true);
     }
 
     /**

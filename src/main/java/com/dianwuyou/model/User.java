@@ -67,6 +67,10 @@ public class User {
     @Length(max = 256)
     private String password;
 
+    @Column(name = "transaction_pswd")
+    @Length(max = 256)
+    private String transactionPswd; //交易密码
+
     @Column(name = "salt", nullable = false)
     @Length(max = 64)
     private String salt;
@@ -189,6 +193,13 @@ public class User {
         return salted.equals(password);
     }
 
+    public boolean isTransPasswordRightOrEmpty(String transPswdMd5){
+        if(transactionPswd == null)
+            return true;
+        String salted = Encoding.getEncodedString(salt + transactionPswd);
+        return salted.equals(transPswdMd5);
+    }
+
     public String getUserTypeString(){
         switch (type){
             case USERTYPE_REQUESTER:
@@ -256,10 +267,13 @@ public class User {
         ));
     }
 
-    public void generateSaltPassword(){
+    public void generateSaltPassword(boolean isTransPswd){
         //MD5(salt + MD5(password))
         //Assume the password is already encoded at the frontend
-        password = Encoding.getEncodedString(salt + password);
+        if(isTransPswd)
+            transactionPswd = Encoding.getEncodedString((salt + transactionPswd));
+        else
+            password = Encoding.getEncodedString(salt + password);
     }
 
     @Override
@@ -313,6 +327,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getTransactionPswd() {
+        return transactionPswd;
+    }
+
+    public void setTransactionPswd(String transactionPswd) {
+        this.transactionPswd = transactionPswd;
     }
 
     public String getSalt() {

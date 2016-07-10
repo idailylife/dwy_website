@@ -45,6 +45,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
         encodingFilter.setEncoding("UTF-8");
-        return new Filter[]{encodingFilter};
+        XssFilter xssFilter = new XssFilter();
+        return new Filter[]{encodingFilter, xssFilter};
     }
 }

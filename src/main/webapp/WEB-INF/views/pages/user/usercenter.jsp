@@ -42,7 +42,7 @@
                                     <h1><small>基本信息</small></h1>
                                     <p>账户编号：<span>${user.id}</span></p>
                                     <p>电子邮箱：<span>${user.email}</span></p>
-                                    <p>手机号码：<span>${user.phoneNumber ? user.phoneNumber : "未填写"} </span></p>
+                                    <p>手机号码：<span>${user.phoneNumber!=null ? user.phoneNumber : "未填写"} </span></p>
                                     <p>用户类型：<span>${user.userTypeString}</span></p>
                                     <p>实名认证：<span>${user.validationStateString}</span></p>
                                 </div>
@@ -167,8 +167,8 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <h1><small>通过短信验证</small></h1>
-                                        <c:if test="${user.phoneNumber}">
-                                            <p>如果您的号码<span id="phonenum" class="b">${user.phoneNumber}</span> 还在正常使用，请选择此方式</p>
+                                        <c:if test="${user.phoneNumber != null}">
+                                            <p>如果您的号码<span class="b">${user.phoneNumber}</span> 还在正常使用，请选择此方式</p>
                                         </c:if>
 
                                         <p>号码有误或尚未绑定，请前往<a href="#phonebind" aria-controls="phonebind" role="tab" data-toggle="tab" >手机绑定</a>页面进行手机号码更换</p>
@@ -201,16 +201,16 @@
                                                     <div class="form-group">
                                                         <label for="phonenumber" class="col-sm-3 control-label">验证码</label>
                                                         <div class="col-sm-5">
-                                                            <input type="text" class="form-control" id="phonenumber" placeholder="" min="11" required>
+                                                            <input type="text" class="form-control" id="inputPhoneVCodeChgPswd" placeholder="" min="11" required>
                                                         </div>
                                                         <div class="col-sm-2">
-                                                            <button id="retrievevaricode" type="submit" class="btn btn-primary">获取验证码</button>
+                                                            <button id="btnGetVerifyCodeChgPswd" type="button" class="btn btn-primary">获取验证码</button>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <div class="col-sm-offset-3 col-sm-10">
-                                                            <button id="changepswdsubmit" type="submit" class="btn btn-primary">提交</button>
+                                                            <button id="btnSubmitChgPswd" type="button" class="btn btn-primary">提交</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -230,7 +230,7 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <h1><small>手机绑定</small></h1>
-                                    <p>手机号码：<span id="phonenum" class="b">${user.phoneNumber ? user.phoneNumber : "尚未绑定"}</span></p>
+                                    <p>手机号码：<span id="phonenum" class="b">${user.phoneNumber!=null ? user.phoneNumber : "尚未绑定"}</span></p>
                                     <p>如果您需要换绑手机，请点击更换手机：&nbsp&nbsp<button id="changephonenum" type="submit" class="btn btn-primary" data-toggle="collapse" data-target="#changephonenumform" aria-expanded="false"  aria-controls="changephonenumform">更换手机</button></p>
 
                                     <div class="collapse" id="changephonenumform">
@@ -238,9 +238,9 @@
                                             <h1><small>手机绑定</small></h1>
                                             <form class="form-horizontal registerForm">
                                                 <div class="form-group">
-                                                    <label for="receivedevice" class="col-sm-3 control-label">接收设备</label>
+                                                    <label for="" class="col-sm-3 control-label">接收设备</label>
                                                     <div class="col-sm-9">
-                                                        <input type="radio" name="email" value="email" checked="checked" />邮箱接收 <input type="radio" name="phone" value="phone" />手机接收 </p>
+                                                        <input type="radio" name="radioRcvType" value="email" checked="checked" />邮箱接收 <input type="radio" name="radioRcvType" value="phone" />手机接收 </p>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -279,76 +279,77 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <h1><small>交易密码设置：</small></h1>
-                                    <p><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp未设置，请尽快在下方设置您的交易密码</p>
+                                    <c:choose>
+                                        <c:when test="${user.transactionPswd == null}">
+                                            <p><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp未设置，请尽快在下方设置您的交易密码</p>
 
 
-                                    <h1><small>设置交易密码</small></h1>
-                                    <form class="form-horizontal registerForm">
-                                        <div class="form-group">
-                                            <label for="tradepswd" class="col-sm-3 control-label">交易密码</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" type="password" name="tradepswd" id="tradepswd"  min="6" required />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tradepswdconfirm" class="col-sm-3 control-label">交易密码确认</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" type="passowrd" id="tradepswdconfirm" name="tradepswdconfirm" min="6" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-offset-3 col-sm-10">
-                                            <button id="tradepswdsetsubmit" type="submit" class="btn btn-primary">提交</button>
-                                        </div>
-                                    </form>
-                                    <br />
-                                    <br />
-
-                                    <hr />
-
-                                    <p><span class="glyphicon glyphicon-ok-sign"></span>&nbsp交易密码已设置，修改交易密码&nbsp&nbsp<button id="changetradepswd" type="submit" class="btn btn-primary" data-toggle="collapse" data-target="#changetradepswdform" aria-expanded="false"  aria-controls="changetradepswdform">更改交易密码</button></p>
-                                    <div class="collapse" id="changetradepswdform">
-                                        <div class="well">
-                                            <h1><small>修改交易密码</small></h1>
+                                            <h1><small>设置交易密码</small></h1>
                                             <form class="form-horizontal registerForm">
                                                 <div class="form-group">
-                                                    <label for="oldtradepswd" class="col-sm-3 control-label">原始密码</label>
+                                                    <label for="tradepswd" class="col-sm-3 control-label">交易密码</label>
                                                     <div class="col-sm-9">
-                                                        <input type="password" name="oldtradepswd" id="oldtradepswd" class="form-control" />
+                                                        <input class="form-control" type="password" name="tradepswd" id="tradepswd"  min="6" required />
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="newtradepswd" class="col-sm-3 control-label">交易密码</label>
+                                                    <label for="tradepswdconfirm" class="col-sm-3 control-label">交易密码确认</label>
                                                     <div class="col-sm-9">
-                                                        <input class="form-control" type="password" id="newtradepswd" name="newtradepswd" min="6" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="newtradepswdconfirm" class="col-sm-3 control-label">再次输入</label>
-                                                    <div class="col-sm-9">
-                                                        <input class="form-control" type="password" id="newtradepswdconfirm" name="newtradepswdconfirm" min="6" required>
+                                                        <input class="form-control" type="passowrd" id="tradepswdconfirm" name="tradepswdconfirm" min="6" required>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label for="varicode" class="col-sm-3 control-label">验证码</label>
-                                                    <div class="col-sm-5">
-                                                        <input type="text" class="form-control" id="varicode" required>
-                                                    </div>
-                                                    <div class="col-sm-2">
-                                                        <button id="retrievevaricode" type="submit" class="btn btn-primary">获取验证码</button>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-sm-offset-3 col-sm-10">
-                                                        <button id="phonebindsubmit" type="submit" class="btn btn-primary">提交</button>
-                                                    </div>
+                                                <div class="col-sm-offset-3 col-sm-10">
+                                                    <button id="tradepswdsetsubmit" type="submit" class="btn btn-primary">提交</button>
                                                 </div>
                                             </form>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p><span class="glyphicon glyphicon-ok-sign"></span>&nbsp交易密码已设置，修改交易密码&nbsp&nbsp<button id="changetradepswd" type="submit" class="btn btn-primary" data-toggle="collapse" data-target="#changetradepswdform" aria-expanded="false"  aria-controls="changetradepswdform">更改交易密码</button></p>
+                                            <div class="collapse" id="changetradepswdform">
+                                                <div class="well">
+                                                    <h1><small>修改交易密码</small></h1>
+                                                    <form class="form-horizontal registerForm">
+                                                        <div class="form-group">
+                                                            <label for="oldtradepswd" class="col-sm-3 control-label">原始密码</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="password" name="oldtradepswd" id="oldtradepswd" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="newtradepswd" class="col-sm-3 control-label">交易密码</label>
+                                                            <div class="col-sm-9">
+                                                                <input class="form-control" type="password" id="newtradepswd" name="newtradepswd" min="6" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="newtradepswdconfirm" class="col-sm-3 control-label">再次输入</label>
+                                                            <div class="col-sm-9">
+                                                                <input class="form-control" type="password" id="newtradepswdconfirm" name="newtradepswdconfirm" min="6" required>
+                                                            </div>
+                                                        </div>
 
-                                        </div>
-                                    </div>
-                                    <hr />
+                                                        <div class="form-group">
+                                                            <label for="varicode" class="col-sm-3 control-label">验证码</label>
+                                                            <div class="col-sm-5">
+                                                                <input type="text" class="form-control" id="varicode" required>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button id="retrievevaricode" type="submit" class="btn btn-primary">获取验证码</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-offset-3 col-sm-10">
+                                                                <button id="phonebindsubmit" type="submit" class="btn btn-primary">提交</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </div>
                             </div>
                         </div>

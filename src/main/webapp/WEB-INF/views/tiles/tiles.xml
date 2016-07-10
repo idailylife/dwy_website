@@ -47,6 +47,8 @@
             <add-attribute value="/static/css/user/register.css"/>
         </put-list-attribute>
         <put-list-attribute name="javascripts" inherit="true">
+            <add-attribute value="/static/js/md5.js"/>
+            <add-attribute value="/static/js/jquery.validate.min.js"/>
             <add-attribute value="/static/js/user/register.js"/>
         </put-list-attribute>
     </definition>
@@ -84,6 +86,7 @@
             <add-attribute value="/static/js/bootstrap-senser-customed.min.js"/>
             <add-attribute value="/static/js/modernizr_senser.custom.js"/>
             <add-attribute value="/static/js/unslider.min.js"/>
+            <add-attribute value="/static/js/md5.js"/>
             <add-attribute value="/static/js/user/usercenter.js"/>
         </put-list-attribute>
         <put-list-attribute name="stylesheets">

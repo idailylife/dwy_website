@@ -21,8 +21,8 @@
         </div>
         <div class="navbar-collapse collapse" role="navigation">
             <ul class="nav navbar-nav">
-                <li><a href="" target="_blank">任务大厅</a></li>
-                <li><a href="" target="_blank">个人中心</a></li>
+                <li><a href="<c:url value="/task/all"/> ">任务大厅</a></li>
+                <li><a href="<c:url value="/user"/> " >个人中心</a></li>
                 <li><a href="" target="_blank">联系我们</a></li>
                 <li><a href="" target="_blank">投诉建议</a></li>
                 <li>
@@ -41,7 +41,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <c:choose>
                     <c:when test="${loginState}">
-                        <li><a href="<c:url value="#"/> ">${displayName}</a></li>
+                        <li><a href="<c:url value="/user"/> ">${displayName}</a></li>
                         <li><a href="<c:url value="/user/logout"/> ">注销</a></li>
                     </c:when>
                     <c:otherwise>
@@ -55,5 +55,5 @@
     </div>
 </div>
 <script>
-    var homeUrl = "<c:url value="/"/>";
+    var homeUrl = "<c:url value=""/>";
 </script>

@@ -2,15 +2,26 @@ package com.dianwuyou.web;
 
 
 import com.dianwuyou.model.Task;
+import com.dianwuyou.model.User;
+import com.dianwuyou.model.json.AjaxResponseBody;
+import com.dianwuyou.service.ImageDiskFileService;
 import com.dianwuyou.service.TaskService;
+import com.dianwuyou.service.UserService;
 import com.dianwuyou.web.exception.ModelObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,6 +36,12 @@ public class TaskController {
 
     @Autowired
     TaskService taskService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    ImageDiskFileService imageDiskFileService;
 
     /**
      * 列出最新的任务(任务大厅功能)
@@ -45,7 +62,7 @@ public class TaskController {
     }
 
     /**
-     * 列出所有Task并加入model
+     * 列出所有Task
      * @param page 页码号,从0开始
      * @param model
      */
@@ -60,5 +77,61 @@ public class TaskController {
         model.addAttribute("tasks", tasks);
         model.addAttribute("pageCount", pageCount);
         model.addAttribute("currentPage", page + 1);
+    }
+
+    /**
+     * 提交新的任务
+     * 此POST请求的传入对象是FormData,不是JSON
+     * 后端会计算用户账户内的余额是否足够支付费用,不够支付会返回错误码
+     * 如果余额足够,会扣减用户的余额
+     * @param request
+     * @param task
+     * @param bindingResult
+     * @return
+     * @throws IOException
+     */
+    @ResponseBody
+    @Transactional
+    @RequestMapping(value = "/create", method = RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+    public AjaxResponseBody submitNewTask(HttpServletRequest request, @Valid Task task,
+                                          BindingResult bindingResult) throws IOException{
+        AjaxResponseBody responseBody = new AjaxResponseBody();
+        if(bindingResult.hasErrors()){
+            responseBody.setState(400);
+            responseBody.setMessage("request format error");
+            return responseBody;
+        }
+        User user = userService.getFromSession(request);
+        if(user.getType() == User.USERTYPE_WORKER){
+            responseBody.setState(403);
+            responseBody.setMessage("Task cannot be created by worker");
+            return responseBody;
+        }
+
+        //Check if the user's balance is enough to pay the fee
+        Double commissonToPay = task.getCommission() * task.getQtyToBuy(); //佣金单价*数量
+        if(user.getBalance() < commissonToPay){
+            responseBody.setState(405);
+            responseBody.setMessage("Low user balance");
+            responseBody.setContent(user.getBalance().toString());
+            return responseBody;
+        } else {
+            user.setBalance(user.getBalance() - commissonToPay);
+            userService.updateUser(user);   //Update user balance
+        }
+
+        //Save task to generate task id
+        if(task.getImage() != null)
+            task.setImgHref(task.getImage().getOriginalFilename());
+        taskService.saveTask(task);
+
+        //Save file
+        if(task.getImage() != null){
+            imageDiskFileService.saveTaskCreationImage(user, task);
+        }
+        responseBody.setState(200);
+        responseBody.setContent(user.getBalance().toString());
+        return responseBody;
     }
 }

@@ -394,7 +394,7 @@ public class UserController {
     produces = MediaType.APPLICATION_JSON_VALUE,
     consumes = MediaType.APPLICATION_JSON_VALUE)
     public AjaxResponseBody changePassword(HttpServletRequest request,
-                                           @Valid PasswordChangeRequestBody passwordChangeRequestBody,
+                                           @Valid @RequestBody PasswordChangeRequestBody passwordChangeRequestBody,
                                            BindingResult bindingResult){
         AjaxResponseBody responseBody = new AjaxResponseBody();
         if(bindingResult.hasErrors()){
@@ -422,4 +422,42 @@ public class UserController {
         return responseBody;
     }
 
+
+    /**
+     * 修改交易密码处理
+     * JSON请求格式
+     * {
+     *     oldPassword: md5(旧交易密码) 或 任意非空字符(仅针对初次设置)
+     *     newPassword: md5(新交易密码)
+     *     phoneVerifyCode: 传入任意非空字符, 以后留作填写短信验证码
+     * }
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/changeTransPassword", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public AjaxResponseBody changeTransPassword(HttpServletRequest request,
+                                           @Valid @RequestBody PasswordChangeRequestBody passwordChangeRequestBody,
+                                           BindingResult bindingResult){
+        AjaxResponseBody responseBody = new AjaxResponseBody();
+        if(bindingResult.hasErrors()){
+            responseBody.setState(400);
+            responseBody.setMessage("Illegal request format");
+        } else {
+            User user = userService.getFromSession(request);
+            if(user.isTransPasswordRightOrEmpty(passwordChangeRequestBody.getOldPasswordMd5())){
+                user.setTransactionPswd(passwordChangeRequestBody.getNewPasswordMd5());
+                userService.setSaltTransactionPassword(user);
+                userService.updateUser(user);
+                responseBody.setState(200);
+            } else {
+                responseBody.setState(401);
+                responseBody.setMessage("Request password is incorrect");
+            }
+            //request.getSession().removeAttribute(Constants.KEY_CHG_PSWD_MOBILE_VCODE);
+        }
+        return responseBody;
+    }
 }

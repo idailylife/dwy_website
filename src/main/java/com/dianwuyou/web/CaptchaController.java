@@ -1,6 +1,8 @@
 package com.dianwuyou.web;
 
+import com.dianwuyou.model.User;
 import com.dianwuyou.model.json.AjaxResponseBody;
+import com.dianwuyou.service.UserService;
 import com.dianwuyou.util.Constants;
 import com.dianwuyou.util.Encoding;
 import com.google.code.kaptcha.Producer;
@@ -28,6 +30,9 @@ import java.util.Random;
 @Controller
 @RequestMapping("/verify")
 public class CaptchaController {
+
+    @Autowired
+    UserService userService;
 
     private Producer captchaProducer;
 
@@ -145,7 +150,7 @@ public class CaptchaController {
     @RequestMapping(value = "/phone", method = RequestMethod.POST,
     produces = MediaType.APPLICATION_JSON_VALUE,
     consumes = MediaType.APPLICATION_JSON_VALUE)
-    public AjaxResponseBody sentVerifySms(@RequestBody Map<String, String> map,
+    public AjaxResponseBody sendVerifySms(@RequestBody Map<String, String> map,
                                           HttpServletRequest request){
         //TODO: 短信验证码服务接入
         AjaxResponseBody responseBody = new AjaxResponseBody();
@@ -173,6 +178,45 @@ public class CaptchaController {
         return responseBody;
     }
 
-    //TODO: 用户登录情况下发送短信验证码
+
+
+    /**
+     * 给已登录的用户发送短信验证码到绑定的手机号(或新手机号)
+     * 传入参数(JSON),可选:
+     *          { phoneNumber: 待发送的号码,无参数传入则为用户绑定的手机号 }
+     * 返回码
+     *  .state 200:成功
+     *         401:请求太过频繁
+     *         402:尚未绑定手机号且无传入参数
+     *
+     *
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/phoneForExistingUser", method = RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_VALUE,
+    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public AjaxResponseBody sendVerifySmsForExistingUser(HttpServletRequest request,
+                                                         @RequestBody Map<String,String> map){
+        User user = userService.getFromSession(request);
+        AjaxResponseBody responseBody = new AjaxResponseBody();
+        if(request.getSession().getAttribute(Constants.KEY_CHG_PSWD_MOBILE_VCODE) != null){
+            //之前已经请求过且尚未超时,返回错误
+            responseBody.setState(401);
+            responseBody.setMessage("Request too frequent");
+        } else if(user.getPhoneNumber() == null && !map.containsKey("phoneNumber")){
+            responseBody.setState(402);
+            responseBody.setContent("Phone number not set");
+        } else {
+            String phoneNumber = user.getPhoneNumber();
+            if(map.containsKey("phoneNumber"))
+                phoneNumber = map.get("phoneNumber");
+            String verifyCode = "1234"; //TODO: cut in msg service
+            request.getSession().setAttribute(Constants.KEY_CHG_PSWD_MOBILE_VCODE, verifyCode);
+            responseBody.setState(200);
+        }
+        return responseBody;
+    }
 
 }

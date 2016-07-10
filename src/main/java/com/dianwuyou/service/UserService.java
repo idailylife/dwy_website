@@ -27,6 +27,7 @@ public interface UserService {
     void updateUser(User user);
     boolean isUniqueEmail(String email, Integer id);
     void setSaltPassword(User user);
+    void setSaltTransactionPassword(User user);
     int verify(String email, String passwordInMD5);
     int verify(int uid, String token);
     int maintainLoginState(HttpServletRequest request, HttpServletResponse response) throws IOException;

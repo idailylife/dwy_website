@@ -2,6 +2,7 @@ package com.dianwuyou.model;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -51,6 +52,9 @@ public class Task {
     @Column(name = "start_time", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
+
+    @Column(name = "img_href")
+    private String imgHref; //内部图片存储文件名,文件会存储在以task id 命名的目录底下
 
     @Column(name = "gap_duration")
     @NotNull
@@ -149,6 +153,9 @@ public class Task {
     @Column(name = "comment_pay")
     @Length(max = 100)
     private String commentPay;      //付款说明
+
+    @Transient
+    private MultipartFile image;
 
     /**
      * 计算佣金单价
@@ -426,5 +433,21 @@ public class Task {
 
     public void setCommentPay(String commentPay) {
         this.commentPay = commentPay;
+    }
+
+    public String getImgHref() {
+        return imgHref;
+    }
+
+    public void setImgHref(String imgHref) {
+        this.imgHref = imgHref;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 }
