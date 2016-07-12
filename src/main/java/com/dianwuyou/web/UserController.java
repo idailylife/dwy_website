@@ -429,7 +429,7 @@ public class UserController {
      * {
      *     oldPassword: md5(旧交易密码) 或 任意非空字符(仅针对初次设置)
      *     newPassword: md5(新交易密码)
-     *     phoneVerifyCode: 传入任意非空字符, 以后留作填写短信验证码
+     *     phoneVerifyCode: 短信验证码
      * }
      * @param request
      * @return
@@ -446,17 +446,23 @@ public class UserController {
             responseBody.setState(400);
             responseBody.setMessage("Illegal request format");
         } else {
-            User user = userService.getFromSession(request);
-            if(user.isTransPasswordRightOrEmpty(passwordChangeRequestBody.getOldPasswordMd5())){
-                user.setTransactionPswd(passwordChangeRequestBody.getNewPasswordMd5());
-                userService.setSaltTransactionPassword(user);
-                userService.updateUser(user);
-                responseBody.setState(200);
+            String smsVerifyCode = (String) request.getSession().getAttribute(Constants.KEY_CHG_PSWD_MOBILE_VCODE);
+            if(smsVerifyCode == null || !smsVerifyCode.equals(passwordChangeRequestBody.getPhoneVerifyCode())){
+                responseBody.setState(402);
+                responseBody.setMessage("Wrong phone verify code");
             } else {
-                responseBody.setState(401);
-                responseBody.setMessage("Request password is incorrect");
+                User user = userService.getFromSession(request);
+                if(user.isTransPasswordRightOrEmpty(passwordChangeRequestBody.getOldPasswordMd5())){
+                    user.setTransactionPswd(passwordChangeRequestBody.getNewPasswordMd5());
+                    userService.setSaltTransactionPassword(user);
+                    userService.updateUser(user);
+                    responseBody.setState(200);
+                } else {
+                    responseBody.setState(401);
+                    responseBody.setMessage("Request password is incorrect");
+                }
             }
-            //request.getSession().removeAttribute(Constants.KEY_CHG_PSWD_MOBILE_VCODE);
+            request.getSession().removeAttribute(Constants.KEY_CHG_PSWD_MOBILE_VCODE);
         }
         return responseBody;
     }

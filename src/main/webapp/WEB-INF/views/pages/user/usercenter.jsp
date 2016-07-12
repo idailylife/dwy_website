@@ -285,22 +285,32 @@
 
 
                                             <h1><small>设置交易密码</small></h1>
-                                            <form class="form-horizontal registerForm">
+                                            <form class="form-horizontal registerForm" id="formSetTransPswd">
+                                                <input type="hidden" name="oldPassword" value="1">
                                                 <div class="form-group">
                                                     <label for="tradepswd" class="col-sm-3 control-label">交易密码</label>
                                                     <div class="col-sm-9">
-                                                        <input class="form-control" type="password" name="tradepswd" id="tradepswd"  min="6" required />
+                                                        <input class="form-control" type="password" name="newPassword" id="tradepswd"  min="6" required />
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="tradepswdconfirm" class="col-sm-3 control-label">交易密码确认</label>
                                                     <div class="col-sm-9">
-                                                        <input class="form-control" type="passowrd" id="tradepswdconfirm" name="tradepswdconfirm" min="6" required>
+                                                        <input class="form-control" type="password" id="tradepswdconfirm" min="6" required>
                                                     </div>
                                                 </div>
-
+                                                <div class="form-group">
+                                                    <label for="varicode" class="col-sm-3 control-label">验证码</label>
+                                                    <div class="col-sm-5">
+                                                        <input type="text" class="form-control" name="phoneVerifyCode" id="varicode" required>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <button id="btnGetPhoneVCodeChgTransPswd" type="button" class="btn btn-primary">获取验证码</button>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="phoneVerifyCode" value="1111">
                                                 <div class="col-sm-offset-3 col-sm-10">
-                                                    <button id="tradepswdsetsubmit" type="submit" class="btn btn-primary">提交</button>
+                                                    <button id="btnSetTradePswd" type="button" class="btn btn-primary">提交</button>
                                                 </div>
                                             </form>
                                         </c:when>
@@ -309,38 +319,37 @@
                                             <div class="collapse" id="changetradepswdform">
                                                 <div class="well">
                                                     <h1><small>修改交易密码</small></h1>
-                                                    <form class="form-horizontal registerForm">
+                                                    <form class="form-horizontal registerForm" id="formSetTransPswd">
                                                         <div class="form-group">
                                                             <label for="oldtradepswd" class="col-sm-3 control-label">原始密码</label>
                                                             <div class="col-sm-9">
-                                                                <input type="password" name="oldtradepswd" id="oldtradepswd" class="form-control" />
+                                                                <input type="password" name="oldPassword" id="oldtradepswd" class="form-control" />
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="newtradepswd" class="col-sm-3 control-label">交易密码</label>
                                                             <div class="col-sm-9">
-                                                                <input class="form-control" type="password" id="newtradepswd" name="newtradepswd" min="6" required>
+                                                                <input class="form-control" type="password" id="newtradepswd" name="newPassword" min="6" required>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="newtradepswdconfirm" class="col-sm-3 control-label">再次输入</label>
                                                             <div class="col-sm-9">
-                                                                <input class="form-control" type="password" id="newtradepswdconfirm" name="newtradepswdconfirm" min="6" required>
+                                                                <input class="form-control" type="password" id="newtradepswdconfirm" min="6" required>
                                                             </div>
                                                         </div>
-
                                                         <div class="form-group">
                                                             <label for="varicode" class="col-sm-3 control-label">验证码</label>
                                                             <div class="col-sm-5">
-                                                                <input type="text" class="form-control" id="varicode" required>
+                                                                <input type="text" class="form-control" name="phoneVerifyCode" id="varicode" required>
                                                             </div>
                                                             <div class="col-sm-2">
-                                                                <button id="retrievevaricode" type="submit" class="btn btn-primary">获取验证码</button>
+                                                                <button id="btnGetPhoneVCodeChgTransPswd" type="button" class="btn btn-primary">获取验证码</button>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="col-sm-offset-3 col-sm-10">
-                                                                <button id="phonebindsubmit" type="submit" class="btn btn-primary">提交</button>
+                                                                <button id="btnSetTradePswd" type="button" class="btn btn-primary">提交</button>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -355,6 +364,23 @@
                         </div>
 
                         <div role="tabpanel" class="tab-pane fade ${tabId eq "shopownertasks" ? "in active":""}" id="shopownertasks">
+                            <div class="row">
+                                <p class="h5">
+                                    我的任务(<span id="mytasksnumber">0</span>)
+                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                    已完成(<span id="completed">0</span>/<span id="mytasksnumber">0</span>)
+                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                    进行中(<span id="processing">0</span>)
+                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                    账户余额(<span id="balance">0.02</span>元)
+                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                    本金支出(<span id="cost">0.00</span>元)
+                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                    本金支出(<span id="commission">0.00</span>元)
+                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                </p>
+                                <hr />
+                            </div>
                             <div class="row">
                                 <a class="btn btn-default" href="taskhistory.html" role="button">任务记录</a>
                                 &nbsp&nbsp

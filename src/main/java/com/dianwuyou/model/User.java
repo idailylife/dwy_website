@@ -196,7 +196,7 @@ public class User {
     public boolean isTransPasswordRightOrEmpty(String transPswdMd5){
         if(transactionPswd == null)
             return true;
-        String salted = Encoding.getEncodedString(salt + transactionPswd);
+        String salted = Encoding.getEncodedString(salt + transPswdMd5);
         return salted.equals(transPswdMd5);
     }
 
@@ -271,7 +271,7 @@ public class User {
         //MD5(salt + MD5(password))
         //Assume the password is already encoded at the frontend
         if(isTransPswd)
-            transactionPswd = Encoding.getEncodedString((salt + transactionPswd));
+            transactionPswd = Encoding.getEncodedString(salt + transactionPswd);
         else
             password = Encoding.getEncodedString(salt + password);
     }

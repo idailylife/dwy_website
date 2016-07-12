@@ -137,6 +137,7 @@ CREATE TABLE `user` (
   `type` int(11) NOT NULL,
   `email` varchar(64) NOT NULL,
   `password` varchar(256) NOT NULL,
+  `transaction_pswd` varchar(256) DEFAULT NULL,
   `salt` varchar(64) NOT NULL,
   `token` varchar(64) DEFAULT NULL,
   `phone_number` varchar(45) NOT NULL,
@@ -177,7 +178,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,0,'noone_knows@yeah.net','9b67c99cc8ad34568181e9dd1c102d59','dwy_1466338020995369925333','9852842d835b490793b5a12fbd7f0f2f','17090830735',NULL,0,0,'default',NULL,'Bowei He',11,1,'220202020201020319','male','d12122','???','???','???','Yuquan Campus, Zhejiang University',1,2,NULL,NULL,3,'39200',0,10,0,0);
+INSERT INTO `user` VALUES (1,0,'noone_knows@yeah.net','808131c17fa64bb25783be599182ec7e','808131c17fa64bb25783be599182ec7e','dwy_1466338020995369925333','9852842d835b490793b5a12fbd7f0f2f','17090830735',NULL,0,0,'default',NULL,'Bowei He',11,1,'220202020201020319','male','d12122','???','???','???','Yuquan Campus, Zhejiang University',1,2,NULL,NULL,3,'39200',0,14,0,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -190,4 +191,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-09 21:51:28
+-- Dump completed on 2016-07-12 22:22:47
