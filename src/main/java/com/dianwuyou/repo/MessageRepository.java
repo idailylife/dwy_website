@@ -10,6 +10,7 @@ import java.util.List;
 public interface MessageRepository {
     Message getById(int id);
     List<Message> getPagedMessages(int receiverId, int page, int pageSize);
+    List<Message> getPagedMessages(int receiverId, int page, int pageSize, boolean getNormal);
     void updateMessage(Message message);
     void saveMessage(Message message);
     void deleteMessage(Message message);

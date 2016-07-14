@@ -1,11 +1,13 @@
 package com.dianwuyou.service;
 
+import com.dianwuyou.model.Task;
 import com.dianwuyou.model.User;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by hebowei on 16/6/10.
@@ -34,4 +36,6 @@ public interface UserService {
     void loginStateParse(Model model, Integer uid);
     User findByInviteCode(String inviteCode);
     User getFromSession(HttpServletRequest request);
+    List<User> getEligibleUsersForTask(Task task);
+
 }

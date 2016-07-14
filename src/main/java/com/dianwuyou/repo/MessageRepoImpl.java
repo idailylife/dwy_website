@@ -1,6 +1,7 @@
 package com.dianwuyou.repo;
 
 import com.dianwuyou.model.Message;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -39,18 +40,26 @@ public class MessageRepoImpl extends AbstractDao<Integer, Message> implements Me
      * @return
      */
     public List<Message> getPagedMessages(int receiverId, int page, int pageSize) {
-        List<Message> messages = createEntityCriteria()
-                .add(Restrictions.eq("receiverId", receiverId))
-                .addOrder(Order.desc("id"))
-                .setFirstResult((page - 1)*pageSize)
-                .setMaxResults(pageSize)
-                .list();
-        return messages;
+        return getPagedMessages(receiverId, page, pageSize, true);
     }
 
     public long getMessageCount(int receiverId) {
         return (Long) createEntityCriteria().add(Restrictions.eq("receiverId", receiverId))
                 .setProjection(Projections.rowCount())
                 .uniqueResult();
+    }
+
+    public List<Message> getPagedMessages(int receiverId, int page, int pageSize, boolean getNormal) {
+        Criteria criteria = createEntityCriteria()
+                .add(Restrictions.eq("receiverId", receiverId))
+                .addOrder(Order.desc("id"))
+                .setFirstResult((page - 1)*pageSize)
+                .setMaxResults(pageSize);
+        if(getNormal){
+            criteria.add(Restrictions.ne("type", Message.TYPE_NEW_TASK));
+        } else {
+            criteria.add(Restrictions.eq("type", Message.TYPE_NEW_TASK));
+        }
+        return criteria.list();
     }
 }

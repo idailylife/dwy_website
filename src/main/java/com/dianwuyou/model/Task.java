@@ -2,6 +2,7 @@ package com.dianwuyou.model;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
+import org.json.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -201,6 +202,16 @@ public class Task {
             default:
                 return -1;
         }
+    }
+
+    @Override
+    public String toString() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.append("keyword", keyword);
+        jsonObject.append("id", id);
+        jsonObject.append("commission", getCommission());
+        jsonObject.append("price", price);
+        return jsonObject.toString();
     }
 
     public Integer getId() {

@@ -1,5 +1,6 @@
 package com.dianwuyou.service;
 
+import com.dianwuyou.model.Task;
 import com.dianwuyou.model.User;
 import com.dianwuyou.util.Constants;
 import com.dianwuyou.util.Encoding;
@@ -13,6 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by hebowei on 16/6/10.
@@ -183,5 +185,14 @@ public class UserServiceImpl implements UserService {
             throw new ModelObjectNotFoundException("Cannot find such user with uid=" + uid);
         }
         return user;
+    }
+
+    /**
+     * 寻找符合Task要求的Users
+     * @param task
+     * @return
+     */
+    public List<User> getEligibleUsersForTask(Task task) {
+        return userRepository.getEligibleForTask(task, null);
     }
 }
