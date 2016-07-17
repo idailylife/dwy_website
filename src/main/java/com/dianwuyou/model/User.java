@@ -276,6 +276,15 @@ public class User {
             password = Encoding.getEncodedString(salt + password);
     }
 
+    public void generateInviteCode(){
+        //生成邀请码
+        inviteCode = Encoding.getRandomUUID().substring(0, 6);
+    }
+
+    public void addScore(int score){
+        this.score += score;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(! (obj instanceof User)){

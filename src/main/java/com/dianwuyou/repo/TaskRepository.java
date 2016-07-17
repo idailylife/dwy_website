@@ -13,6 +13,7 @@ public interface TaskRepository {
     List<Task> getByOwnerId(int ownerId);
     List<Task> getPagedTasks(int pageNo, int pageSize); //pageNo starts from 0
     List<Task> getPagedTasks(int pageNo, int pageSize, boolean showFutureTasks);
+
     void saveTask(Task task);
     void updateTask(Task task);
     void deleteTaskById(int id);

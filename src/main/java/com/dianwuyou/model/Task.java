@@ -89,12 +89,17 @@ public class Task {
     private Integer rankBy; //排序方式
 
     @Column(name = "buyer_gender")
-    private Integer buyerGender;
+    private String buyerGender;
 
-    @Column(name = "buyer_age")
+    @Column(name = "buyer_age_low")
     @Min(0)
     @Max(150)
-    private Integer buyerAge;
+    private Integer buyerAgeLow;
+
+    @Column(name = "buyer_age_high")
+    @Min(0)
+    @Max(150)
+    private Integer buyerAgeHigh;
 
     @Column(name = "buyer_location")
     private String buyerLocation;
@@ -112,10 +117,17 @@ public class Task {
 
     @Column(name = "qty_to_buy")
     @Min(1)
-    private Integer qtyToBuy;   //购买数量(任务可申领单元个数)
+    private Integer qtyToBuy;   //买家需要购买的商品数量
+
+    @Column(name = "published_count", nullable = false)
+    @Min(1)
+    private Integer publishedCount; //任务发布数量
 
     @Column(name = "claimed_count")
-    private Integer claimedCount;
+    private Integer claimedCount;   //已经申领任务的用户数量
+
+    @Column(name = "finished_count")
+    private Integer finishedCount;  //实际完成的用户数量
 
     @Column(name = "require_chat")
     @Type(type = "numeric_boolean")
@@ -158,12 +170,32 @@ public class Task {
     @Transient
     private MultipartFile image;
 
+    public Task(){
+        claimedCount = 0;
+        finishedCount = 0;
+    }
+
     /**
      * 计算佣金单价
      * @return
      */
     public Double getCommission(){
-        return paymentAmount * User.getUnitPrice(buyerRank);
+        double baseUnitPrice = User.getUnitPrice(buyerRank);
+        //淘口令、活动方式的佣金底价减少1元
+        //购物车方式佣金底价增加1元
+        if(type == TYPE_TAOKOULING || type == TYPE_ACTIVITY)
+            baseUnitPrice -= 1.0;
+        else if(type == TYPE_SHOPPING_CART)
+            baseUnitPrice += 1.0;
+        return paymentAmount * qtyToBuy * 0.01 + baseUnitPrice; //佣金 = 底价+付款金额*0.01
+    }
+
+    /**
+     * 计算商家全部花费
+     * @return
+     */
+    public Double getTotalCost(){
+        return publishedCount * (paymentAmount * qtyToBuy + getCommission());   //总费用 = (本金 + 佣金)*发布数量
     }
 
     public String getEntranceTypeName(){
@@ -213,6 +245,7 @@ public class Task {
         jsonObject.append("price", price);
         return jsonObject.toString();
     }
+
 
     public Integer getId() {
         return id;
@@ -302,20 +335,28 @@ public class Task {
         this.rankBy = rankBy;
     }
 
-    public Integer getBuyerGender() {
+    public String getBuyerGender() {
         return buyerGender;
     }
 
-    public void setBuyerGender(Integer buyerGender) {
+    public void setBuyerGender(String buyerGender) {
         this.buyerGender = buyerGender;
     }
 
-    public Integer getBuyerAge() {
-        return buyerAge;
+    public Integer getBuyerAgeLow() {
+        return buyerAgeLow;
     }
 
-    public void setBuyerAge(Integer buyerAge) {
-        this.buyerAge = buyerAge;
+    public void setBuyerAgeLow(Integer buyerAgeLow) {
+        this.buyerAgeLow = buyerAgeLow;
+    }
+
+    public Integer getBuyerAgeHigh() {
+        return buyerAgeHigh;
+    }
+
+    public void setBuyerAgeHigh(Integer buyerAgeHigh) {
+        this.buyerAgeHigh = buyerAgeHigh;
     }
 
     public String getBuyerLocation() {
@@ -460,5 +501,21 @@ public class Task {
 
     public void setImage(MultipartFile image) {
         this.image = image;
+    }
+
+    public Integer getPublishedCount() {
+        return publishedCount;
+    }
+
+    public void setPublishedCount(Integer publishedCount) {
+        this.publishedCount = publishedCount;
+    }
+
+    public Integer getFinishedCount() {
+        return finishedCount;
+    }
+
+    public void setFinishedCount(Integer finishedCount) {
+        this.finishedCount = finishedCount;
     }
 }

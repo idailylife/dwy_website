@@ -24,6 +24,9 @@ public class UserTask {
     @Column(name = "task_id", nullable = false)
     private Integer taskId;
 
+    @Column(name = "task_owner_id", nullable = false)
+    private Integer taskOwnerId;
+
     @Column(name = "quantity", nullable = false)
     private Integer quantity;   //领取个数
 
@@ -39,6 +42,9 @@ public class UserTask {
 
     @Column(name = "state", nullable = false)
     private Integer state;
+
+    @Column(name = "commission")
+    private Double commission;  //完成任务获得的佣金
 
     public UserTask(){
         state = STATE_CLAIMED;
@@ -107,5 +113,21 @@ public class UserTask {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Integer getTaskOwnerId() {
+        return taskOwnerId;
+    }
+
+    public void setTaskOwnerId(Integer taskOwnerId) {
+        this.taskOwnerId = taskOwnerId;
+    }
+
+    public Double getCommission() {
+        return commission;
+    }
+
+    public void setCommission(Double commission) {
+        this.commission = commission;
     }
 }

@@ -193,6 +193,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     public List<User> getEligibleUsersForTask(Task task) {
-        return userRepository.getEligibleForTask(task, null);
+        return userRepository.getEligibleUsers(task);
+        //return userRepository.getEligibleForTask(task, null);
     }
 }

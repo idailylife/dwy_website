@@ -12,4 +12,6 @@ public interface UserTaskRepository {
     void save(UserTask userTask);
     void update(UserTask userTask);
     List<UserTask> getUserTasks(int userId, int page, int itemsPerPage);
+    int getUserTaskOwnerCoOccuranceCount(int userId, int taskOwnerId);
+    int getUserTaskCountToday(int userId);
 }

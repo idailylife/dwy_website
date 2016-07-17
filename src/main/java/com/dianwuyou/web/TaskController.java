@@ -1,14 +1,17 @@
 package com.dianwuyou.web;
 
 
+import com.dianwuyou.model.Message;
 import com.dianwuyou.model.Task;
 import com.dianwuyou.model.User;
+import com.dianwuyou.model.UserTask;
 import com.dianwuyou.model.json.AjaxResponseBody;
-import com.dianwuyou.service.ImageDiskFileService;
-import com.dianwuyou.service.TaskService;
-import com.dianwuyou.service.UserService;
+import com.dianwuyou.model.json.TaskClaimRequestBody;
+import com.dianwuyou.service.*;
 import com.dianwuyou.web.exception.ModelObjectNotFoundException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +44,16 @@ public class TaskController {
     UserService userService;
 
     @Autowired
+    UserTaskService userTaskService;
+
+    @Autowired
     ImageDiskFileService imageDiskFileService;
+
+    @Autowired
+    MessagePersistService messagePersistService;
+
+    @Autowired
+    MessageService messageService;
 
     /**
      * 列出最新的任务(任务大厅功能)
@@ -110,7 +122,7 @@ public class TaskController {
         }
 
         //Check if the user's balance is enough to pay the fee
-        Double commissonToPay = task.getCommission() * task.getQtyToBuy(); //佣金单价*数量
+        Double commissonToPay = task.getTotalCost(); //佣金单价*数量
         if(user.getBalance() < commissonToPay){
             responseBody.setState(405);
             responseBody.setMessage("Low user balance");
@@ -118,6 +130,7 @@ public class TaskController {
             return responseBody;
         } else {
             user.setBalance(user.getBalance() - commissonToPay);
+            user.addScore(2); //商家成功发布任务+2积分
             userService.updateUser(user);   //Update user balance
         }
 
@@ -130,8 +143,91 @@ public class TaskController {
         if(task.getImage() != null){
             imageDiskFileService.saveTaskCreationImage(user, task);
         }
+
+        //Send messages to target workers
+        messagePersistService.storeMessagesForNewTask(task);
+
         responseBody.setState(200);
         responseBody.setContent(user.getBalance().toString());
         return responseBody;
     }
+
+    /**
+     * 传入数据,JSON
+     * {
+     *     taskId: 任务ID,
+     *     messageId: 发任务的消息ID,
+     *     quantity: 领取数量
+     * }
+     * 限制:单用户一天接任务不能超过5个
+     *
+     * 返回状态码(JSON)
+     *      200 - 成功
+     *      205 - 任务已满员
+     *      400 - 输入格式错误
+     *      403 - 用户信息校验错误
+     *      405 - 用户当天已申领5个任务,超过限制
+     * @return
+     */
+    @ResponseBody
+    @Transactional
+    @RequestMapping(value = "/claimTask", method = RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_VALUE,
+    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public  AjaxResponseBody claimTask(HttpServletRequest request, @Valid TaskClaimRequestBody taskClaimRequestBody,
+                                       BindingResult bindingResult){
+        AjaxResponseBody responseBody = new AjaxResponseBody();
+        if(bindingResult.hasErrors()){
+            responseBody.setState(400);
+            responseBody.setMessage("Illegal request format");
+            return responseBody;
+        }
+        Message message = messageService.getById(taskClaimRequestBody.getMessageId());
+        User user = userService.getFromSession(request);
+        Task task = taskService.findById(taskClaimRequestBody.getTaskId());
+        JSONObject msgContent = new JSONObject(message.getContent());
+
+        if(userTaskService.getUserTaskCountToday(user.getId()) >= 5){
+            responseBody.setState(402);
+            responseBody.setMessage("User have already claimed 5 tasks");
+            return responseBody;
+        }
+
+
+        if(!message.getReceiverId().equals(user.getId()) || message.getType() != Message.TYPE_NEW_TASK
+                || !taskClaimRequestBody.getTaskId().equals(msgContent.getInt("id"))){
+            responseBody.setState(403);
+            responseBody.setMessage("Cannot verify task invitation message");
+            return responseBody;
+        }
+        if(taskClaimRequestBody.getQuantity() > (task.getPublishedCount() - task.getClaimedCount())){
+            //任务已满员
+            responseBody.setState(205);
+            responseBody.setContent("All tasks have been claimed");
+            return responseBody;
+        }
+        task.setClaimedCount(task.getClaimedCount() + 1);
+        taskService.updateTask(task);
+
+        UserTask userTask = new UserTask();
+        userTask.setTaskId(task.getId());
+        userTask.setTaskOwnerId(task.getOwnerId());
+        userTask.setUserId(user.getId());
+        userTask.setFinishTimeLimit(task.getGapDuration());
+        userTaskService.save(userTask);
+
+        responseBody.setState(200);
+        responseBody.setContent(userTask.getId().toString());
+        return responseBody;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/testEligible", method = RequestMethod.GET)
+    public String testEligible(){
+        Task task = taskService.findById(1);
+        List<User> users = userService.getEligibleUsersForTask(task);
+        return users.toString();
+    }
+
 }
