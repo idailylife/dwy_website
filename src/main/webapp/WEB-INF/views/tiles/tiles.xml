@@ -100,4 +100,23 @@
         <put-attribute name="body" value="/WEB-INF/views/pages/task/list_all.jsp"/>
     </definition>
 
+    <!-- Task publish -->
+    <definition name="task/publish" extends="base-definition">
+        <put-attribute name="body" value="/WEB-INF/views/pages/task/publish.jsp"/>
+        <put-list-attribute name="javascripts" inherit="true">
+            <add-attribute value="/static/js/bootstrap-senser-customed.min.js"/>
+            <add-attribute value="/static/js/modernizr_senser.custom.js"/>
+            <add-attribute value="/static/js/jquery.validate.min.js"/>
+            <add-attribute value="/static/js/unslider.min.js"/>
+            <add-attribute value="/static/js/bootstrap-datetimepicker.js"/>
+            <add-attribute value="/static/js/locale/bootstrap-datetimepicker.zh-CN.js"/>
+            <add-attribute value="/static/js/task/publish.js"/>
+        </put-list-attribute>
+        <put-list-attribute name="stylesheets">
+            <add-attribute value="/static/css/bootstrap-senser-customed.min.css"/>
+            <add-attribute value="/static/css/bootstrap-datetimepicker.min.css"/>
+            <add-attribute value="/static/css/main-senser.css"/>
+        </put-list-attribute>
+    </definition>
+
 </tiles-definitions>

@@ -230,4 +230,12 @@ public class TaskController {
         return users.toString();
     }
 
+    @RequestMapping(value = "/publish", method = RequestMethod.GET)
+    public String taskPublish(HttpServletRequest request, Model model){
+        User user = userService.getFromSession(request);
+        if(user.getType() != User.USERTYPE_REQUESTER){
+            return "redirect:/";
+        }
+        return "task/publish";
+    }
 }
