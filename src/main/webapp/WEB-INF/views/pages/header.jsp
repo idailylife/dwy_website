@@ -55,5 +55,5 @@
     </div>
 </div>
 <script>
-    var homeUrl = "<c:url value=""/>";
+    var homeUrl = "<c:url value="/"/>";
 </script>

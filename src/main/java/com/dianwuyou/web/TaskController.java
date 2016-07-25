@@ -104,12 +104,13 @@ public class TaskController {
      */
     @ResponseBody
     @Transactional
-    @RequestMapping(value = "/create", method = RequestMethod.POST,
+    @RequestMapping(value = "/publish", method = RequestMethod.POST,
     produces = MediaType.APPLICATION_JSON_VALUE)
     public AjaxResponseBody submitNewTask(HttpServletRequest request, @Valid Task task,
                                           BindingResult bindingResult) throws IOException{
         AjaxResponseBody responseBody = new AjaxResponseBody();
-        if(bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()
+                && bindingResult.getErrorCount() > 1){
             responseBody.setState(400);
             responseBody.setMessage("request format error");
             return responseBody;
@@ -137,10 +138,11 @@ public class TaskController {
         //Save task to generate task id
         if(task.getImage() != null)
             task.setImgHref(task.getImage().getOriginalFilename());
+        task.setOwnerId(user.getId());
         taskService.saveTask(task);
 
         //Save file
-        if(task.getImage() != null){
+        if(task.getImage() != null && task.getImage().getOriginalFilename().length() > 0){
             imageDiskFileService.saveTaskCreationImage(user, task);
         }
 

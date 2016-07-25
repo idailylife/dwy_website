@@ -24,12 +24,17 @@ public class MessagePersistService {
     @Autowired
     MessageService messageService;
 
+    @Autowired
+    LoggingService loggingService;
+
     /**
      * Find qualified users and send them messages about the new available task
      * @param task
      */
     @Async
     public void storeMessagesForNewTask(Task task){
+        loggingService.logger.info("storeMessagesForNewTask");
+        System.out.println(">+++++ storeMessage");
         List<User> eligibleUsers = userService.getEligibleUsersForTask(task);
         for(User user:eligibleUsers){
             Message message = new Message();

@@ -3,6 +3,7 @@ package com.dianwuyou.model;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.json.JSONObject;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -35,8 +36,8 @@ public class Task {
     public final static int RANK_BY_POPULATION = 1; //人气
     public final static int RANK_BY_SALES = 2; //销量
     public final static int RANK_BY_CREDIT = 3; //信用
-    public final static int RANK_BY_PRICE = 4;
-    public final static int RANK_BY_TMALL = 5;
+    public final static int RANK_BY_PRICE = 4;  //价格
+    public final static int RANK_BY_TMALL = 5;  //天猫
 
     public final static int PAGE_RANGE_TOP10 = 0; //前十页
 
@@ -47,11 +48,11 @@ public class Task {
     private Integer id;
 
     @Column(name = "owner_id")
-    @NotNull
     private Integer ownerId;    //任务发布者
 
     @Column(name = "start_time", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Date startTime;
 
     @Column(name = "img_href")
@@ -70,19 +71,19 @@ public class Task {
     private Integer entranceType; //入口
 
     @Column(name = "keyword")
-    @Length(min = 10, max = 256)
+    @Length(min = 1, max = 256)
     private String keyword; //关键词(in:自然搜索、直通车、购物车、足迹)
 
     @Column(name = "taokouling")
-    @Length(min = 10, max = 256)
+    //@Length(min = 1, max = 256)
     private String taokouling; //淘口令
 
     @Column(name = "act_name")
-    @Length(min = 5, max = 128)
+    //@Length(min = 1, max = 128)
     private String actName;     //活动名称
 
     @Column(name = "act_type")
-    @Length(min = 5, max = 128) //活动细分
+    //@Length(min = 1, max = 128) //活动细分
     private String actType;
 
     @Column(name = "rank_by")

@@ -13,6 +13,22 @@ $(document).ready(function () {
         forceParse: 0,
         showMeridian: 1
     });
+
+    $("#btnPublish").click(function () {
+       var formData = new FormData(document.getElementById('taskpublishmentform'));
+        $.ajax({
+            url: homeUrl + 'task/publish',
+            type: "POST",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                console.log(data);
+                alert(data.state);
+            }
+        });
+    });
 });
 
 function to_change(){
@@ -23,7 +39,7 @@ function to_change(){
 
     for(var i=0;i<obj.length;i++){
         if(obj[i].checked==true){
-            var currentradio = obj[i].value;
+            var currentradio = obj[i].id;
             if(currentradio=='taocommand'){
                 document.getElementById('taocommanddiv').style.display='block';
                 document.getElementById('activitydiv').style.display='none';

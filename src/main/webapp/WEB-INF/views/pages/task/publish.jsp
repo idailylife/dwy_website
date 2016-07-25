@@ -17,7 +17,7 @@
             </div>
 
             <div id="publishtask">
-                <form class="form-horizontal" id="taskpublishmentform" action="default">
+                <form class="form-horizontal" id="taskpublishmentform">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="thumbnail">
@@ -25,10 +25,10 @@
                                      class="productimg"/>
                                 <div class="caption">
                                     <p>
-                                        <button href="#" class="btn btn-primary img-center " role="button" id="">上传图片
+                                        <button class="btn btn-primary img-center" role="button" id="">上传图片
                                         </button>
                                     </p>
-                                    <input style="display: none;" type="file" name="image">
+                                    <input type="file" name="image">
                                 </div>
                             </div>
                         </div>
@@ -39,27 +39,27 @@
                                         class="warningtext">&nbsp * &nbsp </span></label>
                                 <div class="col-sm-10">
                                     <label class="radio-inline">
-                                        <input type="radio" id="naturalsearch" value="naturalsearch" name="searchgate"
+                                        <input type="radio" id="naturalsearch" value="0" name="type"
                                                onclick="to_change()" checked="checked"> 自然搜索
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" id="taocommand" value="taocommand" name="searchgate"
+                                        <input type="radio" id="taocommand" value="1" name="type"
                                                onclick="to_change()"> 淘口令
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" id="directtrain" value="directtrain" name="searchgate"
+                                        <input type="radio" id="directtrain" value="2" name="type"
                                                onclick="to_change()"> 直通车
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" id="shoppingcart" value="shoppingcart" name="searchgate"
+                                        <input type="radio" id="shoppingcart" value="3" name="type"
                                                onclick="to_change()"> 购物车
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" id="footprint" value="footprint" name="searchgate"
+                                        <input type="radio" id="footprint" value="4" name="type"
                                                onclick="to_change()"> 足迹
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" id="activity" value="activity" name="searchgate"
+                                        <input type="radio" id="activity" value="5" name="type"
                                                onclick="to_change()"> 活动
                                     </label>
                                 </div>
@@ -78,27 +78,27 @@
                                             class="warningtext">&nbsp * &nbsp </span></label>
                                     <div class="col-sm-10">
                                         <label class="radio-inline">
-                                            <input type="radio" value="together" name="sort" checked> 综合
+                                            <input type="radio" value="0" name="sort" checked> 综合
                                         </label>
 
                                         <label class="radio-inline">
-                                            <input type="radio" value="popularity" name="sort"> 人气
+                                            <input type="radio" value="1" name="sort"> 人气
                                         </label>
 
                                         <label class="radio-inline">
-                                            <input type="radio" value="sales" name="sort"> 销量
+                                            <input type="radio" value="2" name="sort"> 销量
                                         </label>
 
                                         <label class="radio-inline">
-                                            <input type="radio" value="credit" name="sort"> 信用
+                                            <input type="radio" value="3" name="sort"> 信用
                                         </label>
 
                                         <label class="radio-inline">
-                                            <input type="radio" value="price" name="sort"> 价格
+                                            <input type="radio" value="4" name="sort"> 价格
                                         </label>
 
                                         <label class="radio-inline">
-                                            <input type="radio" value="tmall" name="sort"> 天猫
+                                            <input type="radio" value="5" name="sort"> 天猫
                                         </label>
                                     </div>
                                 </div>
@@ -108,11 +108,11 @@
                                             class="warningtext">&nbsp * &nbsp </span></label>
                                     <div class="col-sm-10">
                                         <label class="radio-inline">
-                                            <input type="radio" value="pc" name="phoneorpc" checked> 电脑端
+                                            <input type="radio" value="5" name="entranceType" checked> 电脑端
                                         </label>
 
                                         <label class="radio-inline">
-                                            <input type="radio" value="phone" name="phoneorpc"> 手机端
+                                            <input type="radio" value="4" name="entranceType"> 手机端
                                         </label>
                                     </div>
                                 </div>
@@ -122,7 +122,7 @@
                                     <label class="col-sm-2 control-label">输入淘口令<span
                                             class="warningtext">&nbsp * &nbsp </span></label>
                                     <div class="form-group col-sm-10">
-                                        <textarea id="taocommandcontent" class="form-control" rows="3"></textarea>
+                                        <textarea id="taocommandcontent" class="form-control" rows="3" name="taokouling"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -132,20 +132,20 @@
                                     <label for="activityname" class="col-sm-2 control-label">活动名称<span
                                             class="warningtext">&nbsp * &nbsp </span></label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="activityname" placeholder="">
+                                        <input type="text" class="form-control" id="activityname" name="actName" placeholder="">
                                     </div>
 
                                     <label for="activitykind" class="col-sm-2 control-label">活动类别<span
                                             class="warningtext">&nbsp * &nbsp </span></label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="activitykind" placeholder="">
+                                        <input type="text" class="form-control" id="activitykind" name="actType" placeholder="">
                                     </div>
                                 </div>
                                 <div class="form-group">
 
                                     <label for="keywords" class="col-sm-2 control-label">关键词<span class="warningtext">&nbsp * &nbsp </span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="keywords" placeholder="">
+                                        <input type="text" class="form-control" id="keywords" name="keyword" placeholder="">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -153,22 +153,22 @@
                                             class="warningtext">&nbsp * &nbsp </span></label>
                                     <div class="col-sm-10">
                                         <label class="radio-inline">
-                                            <input type="radio" id="together" value="0" name="rankby" checked> 综合
+                                            <input type="radio" id="together" value="0" name="rankBy" checked> 综合
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" id="popularity" value="1" name="rankby"> 人气
+                                            <input type="radio" id="popularity" value="1" name="rankBy"> 人气
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" id="sales" value="2" name="rankby"> 销量
+                                            <input type="radio" id="sales" value="2" name="rankBy"> 销量
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" id="credit" value="3" name="rankby"> 信用
+                                            <input type="radio" id="credit" value="3" name="rankBy"> 信用
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" id="price" value="4" name="rankby"> 价格
+                                            <input type="radio" id="price" value="4" name="rankBy"> 价格
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" id="tmall" value="5" name="rankby"> 天猫
+                                            <input type="radio" id="tmall" value="5" name="rankBy"> 天猫
                                         </label>
                                     </div>
                                 </div>
@@ -177,11 +177,11 @@
                                     <label class="col-sm-2 control-label">入口<span class="warningtext">&nbsp * &nbsp </span></label>
                                     <div class="col-sm-10">
                                         <label class="radio-inline">
-                                            <input type="radio" id="pc" value="pc" name="phoneorpc" checked> 电脑端
+                                            <input type="radio" id="pc" value="5" name="entranceType" checked> 电脑端
                                         </label>
 
                                         <label class="radio-inline">
-                                            <input type="radio" id="phone" value="phone" name="phoneorpc"> 手机端
+                                            <input type="radio" id="phone" value="4" name="entranceType"> 手机端
                                         </label>
                                     </div>
                                 </div>
@@ -190,26 +190,26 @@
                             <div class="form-group">
                                 <label for="gender" class="col-sm-2 control-label">买家性别<span class="warningtext">&nbsp * &nbsp </span></label>
                                 <div class="col-sm-2">
-                                    <select class="form-control" id="gender" required>
-                                        <option value="male" name="male">男</option>
-                                        <option value="female" name="female">女</option>
+                                    <select class="form-control" id="gender" name="buyerGender" required>
+                                        <option value="male" >男</option>
+                                        <option value="female" >女</option>
                                     </select>
                                 </div>
 
                                 <label class="col-sm-2 control-label">年龄</label>
                                 <div class="col-sm-2">
-                                    <input type="text" class="form-control" id="minage" placeholder="最低">
+                                    <input type="text" class="form-control" id="minage" name="buyerAgeLow" placeholder="最低">
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <input type="text" class="form-control" id="maxage" placeholder="最高">
+                                    <input type="text" class="form-control" id="maxage" name="buyerAgeHigh" placeholder="最高">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">交易范围<span class="warningtext">&nbsp * &nbsp </span></label>
                                 <div class="col-sm-2">
-                                    <select class="form-control" name="province">
+                                    <select class="form-control" name="buyerLocation">
                                         <option value="">--请选择省份--</option>
                                         <option value="北京市">北京市</option>
                                         <option value="天津市">天津市</option>
@@ -317,13 +317,13 @@
                                         <label for="showprice" class="col-sm-5 control-label">显示价格<span
                                                 class="warningtext">&nbsp * &nbsp </span></label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="showprice" placeholder=""
+                                            <input type="text" class="form-control" id="showprice" placeholder="" name="price"
                                                    required>
                                         </div>
 
                                         <label class="radio-inline">
-                                            <input type="checkbox" id="withdeliverfee" value="withdeliverfee"
-                                                   name="withdeliverfee" checked> 包邮
+                                            <input type="checkbox" id="withdeliverfee" value="1"
+                                                   name="shipmentCovered" checked> 包邮
                                         </label>
                                     </div>
                                 </div>
@@ -345,13 +345,13 @@
                             <div class="form-group">
                                 <label for="chatcode" class="col-sm-2 control-label">聊天暗语&nbsp&nbsp&nbsp </label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="chatcode" name="chatcode"
+                                    <input type="text" class="form-control" id="chatcode" name="secretMessage"
                                            placeholder="">
                                 </div>
 
                                 <label for="ordercomment" class="col-sm-2 control-label">订单留言&nbsp&nbsp&nbsp </label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="ordercomment" name="ordercomment"
+                                    <input type="text" class="form-control" id="ordercomment" name="commentOrder"
                                            placeholder="">
                                 </div>
                             </div>
@@ -476,7 +476,7 @@
                                         <label for="tasknumber" class="col-sm-2 control-label">发布数量<span
                                                 class="warningtext">&nbsp * &nbsp </span></label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" id="tasknumber" placeholder="个"
+                                            <input type="text" class="form-control" id="tasknumber" placeholder="个" name="publishedCount"
                                                    required>
                                         </div>
                                     </div>
@@ -496,7 +496,7 @@
 
                     <hr/>
 
-                    <button class="btn btn-bg btn-primary img-center" type="submit">发布任务</button>
+                    <button class="btn btn-bg btn-primary img-center" type="button" id="btnPublish">发布任务</button>
 
                     <br/>
 
