@@ -39,7 +39,10 @@
     <![endif]-->
 </head>
 <body>
-    <!-- Header -->
+<script>
+    var homeUrl = document.location.origin;
+</script>
+<!-- Header -->
     <header>
         <tiles:insertAttribute name="header"/>
     </header>

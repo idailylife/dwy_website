@@ -29,7 +29,7 @@ CREATE TABLE `file` (
   `owner` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fname` (`filename`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,7 +116,7 @@ CREATE TABLE `task` (
   PRIMARY KEY (`id`),
   KEY `owner_id` (`owner_id`),
   KEY `start_time` (`start_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (1,1,'2016-05-20 13:14:00',10,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1.02,NULL,10,100,0,0,NULL,NULL,500,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `task` VALUES (1,1,'2016-05-20 13:14:00',10,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1.02,NULL,10,100,0,0,NULL,NULL,500,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,1,NULL,50,2,4,'e2e12e,','','','',0,'male',11,NULL,'???',2,1.1,'1',5,10,0,0,'',NULL,100,'',1,'e21e21','d2112','w12w21','s21s12','2w21',''),(3,1,NULL,50,2,4,'e2e12e,','','','',0,'male',11,NULL,'???',2,1.1,'1',5,10,0,0,'',NULL,100,'',1,'e21e21','d2112','w12w21','s21s12','2w21',''),(4,1,NULL,50,2,4,'e2e12e,','','','',0,'male',11,NULL,'???',2,1.1,'1',5,10,0,0,'',NULL,100,'',1,'e21e21','d2112','w12w21','s21s12','2w21','');
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +182,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,0,'noone_knows@yeah.net','808131c17fa64bb25783be599182ec7e','808131c17fa64bb25783be599182ec7e','dwy_1466338020995369925333','b3001e8baf27401c815b0cace3e4929f','17090830735',NULL,0,0,'default',NULL,'Bowei He',11,1,'220202020201020319','male','d12122','???','???','???','Yuquan Campus, Zhejiang University',1,2,NULL,NULL,3,'39200',0,16,0,0),(2,1,'testworker@test.com','9eae289f047ef0565eab206e3f57366c',NULL,'whatthefuck',NULL,'00000000',NULL,0,0,'default',NULL,NULL,11,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,2,0);
+INSERT INTO `user` VALUES (1,0,'noone_knows@yeah.net','808131c17fa64bb25783be599182ec7e','808131c17fa64bb25783be599182ec7e','dwy_1466338020995369925333',NULL,'17090830735',NULL,9623.350000000002,6,'default',NULL,'Bowei He',11,1,'220202020201020319','male','d12122','???','???','???','Yuquan Campus, Zhejiang University',1,2,NULL,NULL,3,'39200',0,23,0,0),(2,1,'testworker@test.com','9eae289f047ef0565eab206e3f57366c',NULL,'whatthefuck',NULL,'00000000',NULL,0,0,'default',NULL,NULL,11,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,2,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,4 +227,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-17 11:26:53
+-- Dump completed on 2016-07-26 21:02:15
